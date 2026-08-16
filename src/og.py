@@ -1,98 +1,138 @@
-import math, os
+"""Рисует og.png — картинку-превью, которая подтягивается при отправке ссылки в мессенджер.
+
+Запуск:  python src/og.py
+Шрифты берутся из src/ttf/ (Unbounded, PressStart2P, Onest — Google Fonts, OFL).
+"""
+import os
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-TTF = r"C:/Users/kenji/AppData/Local/Temp/claude/H--OSPanel-domains-untitled23/95fdaabf-657d-4dfe-9263-7ec0ba0e42ac/scratchpad/ttf"
-OUT = r"H:/OSPanel/domains/untitled23/og.png"
-W, H = 1200, 630
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TTF = os.path.join(ROOT, "src", "ttf")
+CATS = os.path.join(ROOT, "assets", "cats")
+OUT = os.path.join(ROOT, "og.png")
 
-CREAM = (255, 247, 242)
-ROSE = (232, 87, 124)
-ROSE_DEEP = (184, 57, 94)
-PLUM = (59, 36, 48)
-GOLD = (184, 134, 43)
+W, H = 1200, 630
+INK = (22, 17, 28)
+CREAM = (255, 238, 223)
+CORAL = (255, 84, 112)
+GOLD = (255, 194, 75)
+MINT = (95, 227, 192)
+VIOLET = (167, 123, 255)
+
+NAME = "Алиса"
+NAME_GEN = "Алисы"   # имя в родительном падеже: «только для ...»
+
 
 def font(name, size, wght=None):
     f = ImageFont.truetype(os.path.join(TTF, name), size)
     if wght is not None:
         try:
             f.set_variation_by_axes([wght])
-        except Exception as e:
-            print("var axes failed:", e)
+        except Exception:
+            pass
     return f
 
-img = Image.new("RGB", (W, H), CREAM)
 
-# --- мягкие цветовые пятна ---
-glow = Image.new("RGB", (W, H), CREAM)
+img = Image.new("RGB", (W, H), INK)
+
+# --- тёплые пятна света, как на самой странице ---
+glow = Image.new("RGB", (W, H), INK)
 gd = ImageDraw.Draw(glow)
-gd.ellipse([-260, -300, 620, 380], fill=(255, 228, 238))
-gd.ellipse([700, -260, 1500, 340], fill=(255, 239, 224))
-gd.ellipse([180, 380, 1080, 1000], fill=(251, 216, 230))
+gd.ellipse([-260, -240, 560, 380], fill=(96, 34, 52))
+gd.ellipse([700, -220, 1420, 320], fill=(84, 62, 26))
+gd.ellipse([240, 380, 1160, 1020], fill=(58, 40, 92))
 glow = glow.filter(ImageFilter.GaussianBlur(150))
-img = Image.blend(img, glow, 0.92)
+img = Image.blend(img, glow, 0.85)
+d = ImageDraw.Draw(img)
 
+
+def paste_gif(path, box_w, angle=0, frame=0, card=False):
+    """Кадр из GIF с прозрачностью, увеличенный до box_w, опционально в «фотокарточке»."""
+    im = Image.open(path)
+    im.seek(frame)
+    im = im.convert("RGBA")
+    k = box_w / im.width
+    im = im.resize((box_w, max(1, int(im.height * k))), Image.LANCZOS)
+    if card:
+        pad = 14
+        bg = Image.new("RGBA", (im.width + pad * 2, im.height + pad * 2), CREAM + (255,))
+        ImageDraw.Draw(bg).rectangle([0, 0, bg.width - 1, bg.height - 1], outline=CREAM + (255,), width=4)
+        bg.alpha_composite(im, (pad, pad))
+        im = bg
+    if angle:
+        im = im.rotate(angle, expand=True, resample=Image.BICUBIC)
+    return im
+
+
+def paste_sprite(path, tile_x, tile_y, scale, angle=0):
+    """32×32 тайл из спрайт-листа oneko, увеличенный без сглаживания."""
+    sheet = Image.open(path).convert("RGBA")
+    im = sheet.crop((tile_x * 32, tile_y * 32, tile_x * 32 + 32, tile_y * 32 + 32))
+    im = im.resize((32 * scale, 32 * scale), Image.NEAREST)
+    if angle:
+        im = im.rotate(angle, expand=True, resample=Image.NEAREST)
+    return im
+
+
+layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+
+# --- коты справа, наклеены как фотокарточки ---
+# (у стикеров дно обрезано ровной линией — на карточке это читается как край наклейки)
+cat_love = paste_gif(os.path.join(CATS, "cat-love.gif"), 210, angle=-7, card=True)
+layer.alpha_composite(cat_love, (858, 140))
+cat_happy = paste_gif(os.path.join(CATS, "cat-happy.gif"), 168, angle=6, card=True)
+layer.alpha_composite(cat_happy, (790, 372))
+# пиксельный кот из oneko (тайл «сидит и смотрит»)
+neko = paste_sprite(os.path.join(CATS, "oneko.gif"), 3, 3, 4)
+layer.alpha_composite(neko, (688, 468))
+
+img = Image.alpha_composite(img.convert("RGBA"), layer).convert("RGB")
 d = ImageDraw.Draw(img)
 
 # --- рамка ---
-d.rounded_rectangle([30, 30, W - 30, H - 30], radius=26, outline=(226, 186, 197), width=2)
-d.rounded_rectangle([40, 40, W - 40, H - 40], radius=20, outline=(232, 205, 168), width=1)
+d.rectangle([24, 24, W - 25, H - 25], outline=CREAM, width=4)
 
+# --- верхняя бегущая строка ---
+d.rectangle([0, 0, W, 62], fill=CORAL)
+d.line([(0, 62), (W, 62)], fill=CREAM, width=4)
+f_tick = font("PressStart2P.ttf", 16)
+tick = "ПРИГЛАШЕНИЕ ♥ ТОЛЬКО ДЛЯ " + NAME_GEN.upper() + " ♥ КОТИКИ ВКЛЮЧЕНЫ ♥ "
+x = 16
+while x < W:
+    d.text((x, 22), tick, font=f_tick, fill=INK)
+    x += d.textlength(tick, font=f_tick)
 
-def heart(dr, cx, cy, scale, fill):
-    pts = []
-    for i in range(361):
-        t = math.radians(i)
-        x = 16 * math.sin(t) ** 3
-        y = 13 * math.cos(t) - 5 * math.cos(2 * t) - 2 * math.cos(3 * t) - math.cos(4 * t)
-        pts.append((cx + x * scale, cy - y * scale))
-    dr.polygon(pts, fill=fill)
+# --- левый текстовый блок ---
+LEFT = 74
 
+# золотой чип
+f_chip = font("PressStart2P.ttf", 14)
+chip = "ПЕРСОНАЛЬНОЕ ПРИГЛАШЕНИЕ"
+cw = d.textlength(chip, font=f_chip)
+d.rectangle([LEFT, 138, LEFT + cw + 32, 138 + 46], outline=CREAM, width=3)
+d.text((LEFT + 16, 152), chip, font=f_chip, fill=GOLD)
 
-# --- сердце: мягкое свечение + сама фигура ---
-sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-heart(ImageDraw.Draw(sh), 600, 180, 3.35, (232, 87, 124, 60))
-sh = sh.filter(ImageFilter.GaussianBlur(30))
-img = Image.alpha_composite(img.convert("RGBA"), sh).convert("RGB")
-d = ImageDraw.Draw(img)
-heart(d, 600, 172, 3.0, ROSE)
+# заголовок с жёсткой коралловой тенью
+f_h = font("Unbounded.ttf", 74, 900)
+lines = ["ПОЙДЁШЬ", "СО МНОЙ НА", "СВИДАНИЕ?"]
+y = 214
+for ln in lines:
+    d.text((LEFT + 6, y + 6), ln, font=f_h, fill=CORAL)
+    d.text((LEFT, y), ln, font=f_h, fill=CREAM)
+    y += 88
 
-# --- мелкие сердечки по углам (подальше от текста) ---
-for cx, cy, s, a in ((132, 128, 1.15, 62), (1068, 128, 1.15, 62),
-                     (108, 500, .95, 44), (1092, 500, .95, 44),
-                     (232, 556, .7, 34), (968, 556, .7, 34)):
-    layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    heart(ImageDraw.Draw(layer), cx, cy, s, (232, 87, 124, a))
-    img = Image.alpha_composite(img.convert("RGBA"), layer).convert("RGB")
-d = ImageDraw.Draw(img)
+# мятный чип с программой вечера
+f_sub = font("PressStart2P.ttf", 15)
+sub = "ХАЧАПУРИ + СОТНЯ КОТОВ"
+sw = d.textlength(sub, font=f_sub)
+d.rectangle([LEFT, 494, LEFT + sw + 34, 494 + 52], fill=MINT, outline=CREAM, width=3)
+d.text((LEFT + 17, 512), sub, font=f_sub, fill=INK)
 
-
-def center(text, f, y, fill, tracking=0):
-    if tracking:
-        widths = [d.textlength(ch, font=f) for ch in text]
-        total = sum(widths) + tracking * (len(text) - 1)
-        x = (W - total) / 2
-        for ch, w in zip(text, widths):
-            d.text((x, y), ch, font=f, fill=fill)
-            x += w + tracking
-        return
-    w = d.textlength(text, font=f)
-    d.text(((W - w) / 2, y), text, font=f, fill=fill)
-
-
-f_eyebrow = font("Nunito.ttf", 24, 800)
-f_title = font("Cormorant.ttf", 82, 600)
-f_script = font("MarckScript.ttf", 46)
-f_small = font("Nunito.ttf", 25, 600)
-
-center("ПЕРСОНАЛЬНОЕ ПРИГЛАШЕНИЕ", f_eyebrow, 292, GOLD, tracking=6)
-
-# декоративная линия с ромбом по центру
-d.line([(432, 342), (576, 342)], fill=(224, 186, 198), width=2)
-d.line([(624, 342), (768, 342)], fill=(224, 186, 198), width=2)
-d.polygon([(600, 333), (608, 342), (600, 351), (592, 342)], fill=GOLD)
-
-center("Пойдёшь со мной на свидание?", f_title, 366, PLUM)
-center("нажми, чтобы открыть", f_script, 480, ROSE_DEEP)
+# --- пиксельные звёздочки-искры ---
+for cx, cy, s, col in ((640, 150, 9, GOLD), (676, 470, 7, VIOLET), (1120, 150, 8, MINT),
+                       (44, 470, 7, CORAL), (1150, 560, 9, GOLD)):
+    d.rectangle([cx - s // 3, cy - s, cx + s // 3, cy + s], fill=col)
+    d.rectangle([cx - s, cy - s // 3, cx + s, cy + s // 3], fill=col)
 
 img.save(OUT, "PNG", optimize=True)
 print("OK", OUT, os.path.getsize(OUT) // 1024, "KB")

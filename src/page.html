@@ -4,578 +4,452 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Приглашение</title>
-<meta name="description" content="У меня для тебя одно приглашение. Открой — это займёт минуту.">
-<meta name="theme-color" content="#FFF7F2">
-<meta name="color-scheme" content="light">
+<meta name="description" content="Одно приглашение, два пункта маршрута и очень много котов.">
+<meta name="theme-color" content="#16111C">
+<meta name="color-scheme" content="dark">
 <meta property="og:type" content="website">
 <meta property="og:title" content="У меня для тебя приглашение">
-<meta property="og:description" content="Открой — это займёт одну минуту.">
+<meta property="og:description" content="Два пункта маршрута и очень много котов. Открой.">
 <meta property="og:url" content="https://lxrdkisake.github.io/dlya-tebya/">
 <meta property="og:image" content="https://lxrdkisake.github.io/dlya-tebya/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23E8577C' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23FF5470' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E">
+<link rel="preload" as="image" href="assets/cats/cat-beg.gif">
+<link rel="preload" as="image" href="assets/cats/cat-love.gif">
+<link rel="preload" as="image" href="assets/cats/oneko.gif">
 <style>
 /*__FONTS__*/
 
 /* ============================================================
-   Design tokens — "Нежный романтик"
+   Токены — «пиксельный кото-квест»
    ============================================================ */
 :root{
-  --cream:#FFF7F2;
-  --blush:#FBD9E3;
-  --rose:#E8577C;
-  --rose-deep:#B8395E;
-  --rose-soft:#F7A8BE;
-  --plum:#3B2430;
-  --plum-soft:#6B4A58;
-  --gold:#B8862B;
-  --paper:#FFFCFA;
+  --ink:#16111C;
+  --ink-2:#211926;
+  --ink-3:#2E2233;
+  --line:#FFEEDF;
+  --cream:#FFEEDF;
+  --dim:#BCA6B4;
+  --coral:#FF5470;
+  --gold:#FFC24B;
+  --mint:#5FE3C0;
+  --violet:#A77BFF;
 
-  --r-lg:30px;
-  --r-md:18px;
+  --f-display:'Unbounded', 'Arial Black', sans-serif;
+  --f-pixel:'Press Start 2P', 'Courier New', monospace;
+  --f-body:'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  --sh-soft:0 18px 40px -20px rgba(90,40,60,.30), 0 2px 8px rgba(90,40,60,.06);
-  --sh-lift:0 30px 64px -24px rgba(90,40,60,.40), 0 4px 16px rgba(90,40,60,.10);
-
-  --ease:cubic-bezier(.22,.9,.28,1);
-  --z-fx:0; --z-content:10; --z-runaway:30; --z-ui:50;
-
-  --f-script:'Marck Script', 'Segoe Script', cursive;
-  --f-serif:'Cormorant', 'Times New Roman', serif;
-  --f-sans:'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --z-fx:0; --z-grain:1; --z-neko:20; --z-content:30; --z-runaway:40; --z-ui:60;
+  --ease:cubic-bezier(.2,.9,.3,1);
 }
 
 *,*::before,*::after{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0;
-  font-family:var(--f-sans);
-  color:var(--plum);
-  background:
-    radial-gradient(1200px 720px at 12% -12%, #FFE7EF 0%, rgba(255,231,239,0) 62%),
-    radial-gradient(980px 640px at 92% 4%,  #FFF0E1 0%, rgba(255,240,225,0) 58%),
-    radial-gradient(1100px 820px at 50% 112%, #FBDDE8 0%, rgba(251,221,232,0) 62%),
-    var(--cream);
-  background-attachment:fixed;
+  background:var(--ink);
+  color:var(--cream);
+  font-family:var(--f-body);
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
 }
 
-/* Плавающие сердечки / лепестки */
-#fx{position:fixed; inset:0; width:100%; height:100%; z-index:var(--z-fx); pointer-events:none}
+/* тёплые пятна света на фоне */
+.bg{
+  position:fixed; inset:0; z-index:var(--z-fx); pointer-events:none;
+  background:
+    radial-gradient(760px 520px at 12% 8%,  rgba(255,84,112,.20), transparent 62%),
+    radial-gradient(680px 460px at 88% 14%, rgba(255,194,75,.14), transparent 60%),
+    radial-gradient(900px 620px at 50% 104%, rgba(167,123,255,.18), transparent 62%);
+}
+/* зерно + строчки, чтобы не выглядело как пустая заливка */
+.grain{
+  position:fixed; inset:0; z-index:var(--z-grain); pointer-events:none;
+  opacity:.22;
+  background-image:
+    repeating-linear-gradient(180deg, rgba(255,255,255,.022) 0 1px, transparent 1px 4px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   Общие «жёсткие» примитивы
+   ============================================================ */
+.hard{
+  border:3px solid var(--line);
+  box-shadow:10px 10px 0 0 var(--coral);
+  background:var(--ink-2);
+}
+.tag{
+  font-family:var(--f-pixel);
+  font-size:11px; letter-spacing:0; text-transform:uppercase; line-height:1.5;
+  display:inline-flex; align-items:center; gap:8px;
+  padding:6px 12px;
+  border:2px solid var(--line);
+  background:var(--ink);
+  color:var(--gold);
+}
+.star{
+  width:22px; height:22px; background:var(--gold); flex:none;
+  clip-path:polygon(50% 0%,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0% 50%,39% 39%);
+}
+
+/* Бегущая строка */
+.ticker{
+  position:fixed; top:0; left:0; right:0; z-index:var(--z-ui);
+  background:var(--coral); color:var(--ink);
+  border-bottom:3px solid var(--line);
+  overflow:hidden; height:38px;
+  display:flex; align-items:center;
+}
+.ticker-track{
+  display:flex; flex:none; gap:0;
+  animation:slide 26s linear infinite;
+  will-change:transform;
+}
+.ticker-track span{
+  font-family:var(--f-pixel); font-size:12px; letter-spacing:0;
+  text-transform:uppercase; white-space:nowrap; padding-right:26px;
+  font-weight:600;
+}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ============================================================
    Сцены
    ============================================================ */
 .scene{
-  position:fixed; inset:0; z-index:var(--z-content);
+  position:fixed; inset:38px 0 0; z-index:var(--z-content);
   overflow-y:auto; overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
-  opacity:0; visibility:hidden;
-  transform:scale(.985);
-  transition:opacity .55s var(--ease), transform .55s var(--ease), visibility .55s;
+  opacity:0; visibility:hidden; transform:translateY(10px);
+  transition:opacity .4s var(--ease), transform .4s var(--ease), visibility .4s;
 }
 .scene.active{opacity:1; visibility:visible; transform:none}
 .scene > .inner{
   min-height:100%;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
-  padding:clamp(20px,5vw,40px);
-  padding-top:max(clamp(20px,5vw,40px), env(safe-area-inset-top));
-  padding-bottom:max(clamp(28px,6vw,48px), env(safe-area-inset-bottom));
-  gap:22px;
+  gap:clamp(16px,3vw,26px);
+  padding:clamp(20px,4.4vw,44px) clamp(16px,4vw,32px);
+  padding-bottom:max(clamp(28px,6vw,56px), env(safe-area-inset-bottom));
 }
 
-/* ============================================================
-   Сцена 1 — конверт
-   ============================================================ */
-.env-stage{perspective:1400px; display:grid; place-items:center}
-.envelope{
-  position:relative;
-  width:min(430px, 84vw);
-  aspect-ratio:1.52/1;
-  transform-style:preserve-3d;
-  border:0; padding:0; background:none;
-  cursor:pointer;
-  transition:transform .5s var(--ease), filter .5s var(--ease);
-  filter:drop-shadow(0 34px 44px rgba(120,50,75,.26));
-  animation:breathe 4.5s ease-in-out infinite;
-}
-.envelope:hover{transform:translateY(-6px)}
-.envelope:focus-visible{outline:3px solid var(--rose); outline-offset:14px; border-radius:20px}
-@keyframes breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-
-.env-body{
-  position:absolute; inset:0;
-  background:linear-gradient(160deg,#FFF6F1 0%, #FBE4DA 100%);
-  border-radius:14px;
-  border:1px solid rgba(184,57,94,.16);
-}
-.env-letter{
-  position:absolute; left:7%; right:7%; top:12%;
-  height:78%;
-  background:linear-gradient(180deg,#FFFDFB,#FFF4EF);
-  border-radius:10px;
-  border:1px solid rgba(184,57,94,.13);
-  box-shadow:0 8px 22px -12px rgba(120,50,75,.4);
-  transition:transform .85s var(--ease);
-  display:grid; place-items:center; gap:8px;
-  padding:14px;
-  z-index:2;
-}
-.env-letter .l-line{height:7px; border-radius:4px; background:rgba(184,57,94,.14)}
-.env-letter .lw{width:100%; display:grid; gap:9px; max-width:78%}
-.envelope.open .env-letter{transform:translateY(-42%)}
-
-/* Передняя стенка: закрывает письмо целиком, кроме центрального «V» под клапаном */
-.env-pocket{
-  position:absolute; inset:0; z-index:3; border-radius:14px; overflow:hidden;
-  clip-path:polygon(0 0, 50% 46%, 100% 0, 100% 100%, 0 100%);
-  background:linear-gradient(168deg,#FBE2D7 0%, #F3CDBF 100%);
-}
-.env-pocket::after{
-  content:""; position:absolute; inset:0;
-  background:
-    linear-gradient(112deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 46%),
-    linear-gradient(248deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 46%),
-    linear-gradient(180deg, rgba(184,57,94,.09), rgba(184,57,94,0) 38%);
-}
-.env-flap{
-  position:absolute; left:0; top:0; width:100%; height:66%;
-  transform-origin:top center;
-  transform:rotateX(0deg);
-  transition:transform .8s var(--ease), z-index 0s .4s;
-  z-index:5;
-  backface-visibility:hidden;
-}
-.env-flap .f-face{
-  position:absolute; inset:0;
-  clip-path:polygon(0 0, 100% 0, 50% 100%);
-  background:linear-gradient(178deg,#FFF6F0 0%, #F5C9BA 100%);
-  border-radius:14px 14px 0 0;
-  filter:drop-shadow(0 4px 6px rgba(150,70,90,.16));
-}
-.envelope.open .env-flap{transform:rotateX(178deg); z-index:1}
-
-.wax{
-  position:absolute; left:50%; top:60%; width:74px; height:74px;
-  transform:translate(-50%,-50%);
-  border-radius:50%;
-  background:radial-gradient(circle at 34% 30%, #E8577C 0%, #B8395E 62%, #93264A 100%);
-  box-shadow:0 10px 20px -8px rgba(147,38,74,.75), inset 0 -3px 8px rgba(0,0,0,.18), inset 0 3px 6px rgba(255,255,255,.28);
-  display:grid; place-items:center;
-  z-index:6;
-  transition:opacity .4s var(--ease), transform .5s var(--ease);
-}
-.wax svg{width:32px; height:32px; opacity:.9}
-.envelope.open .wax{opacity:0; transform:translate(-50%,-50%) scale(.6) rotate(-25deg)}
-
-.tap-hint{
-  font-family:var(--f-sans); font-weight:700; font-size:16px;
-  color:var(--plum-soft); letter-spacing:.02em;
-  display:inline-flex; align-items:center; gap:10px;
-  animation:bob 2.2s ease-in-out infinite;
-}
-@keyframes bob{0%,100%{transform:translateY(0); opacity:.75}50%{transform:translateY(5px); opacity:1}}
-
-.env-caption{
-  font-family:var(--f-script);
-  font-size:clamp(26px,6vw,38px);
-  color:var(--rose-deep);
-  text-align:center; margin:0;
-  line-height:1.25;
-}
-
-/* ============================================================
-   Сцена 2 — вопрос
-   ============================================================ */
-.card{
-  position:relative;
-  width:min(640px,100%);
-  background:linear-gradient(180deg,#FFFDFB 0%, #FFF5F0 100%);
-  border:1px solid rgba(184,57,94,.15);
-  border-radius:var(--r-lg);
-  box-shadow:var(--sh-lift);
-  padding:clamp(26px,5.2vw,46px) clamp(20px,5vw,46px) clamp(30px,5.4vw,44px);
-  text-align:center;
-  overflow:hidden;
-}
-.card::before{
-  content:""; position:absolute; left:0; right:0; top:0; height:5px;
-  background:linear-gradient(90deg,var(--rose-soft),var(--rose),var(--gold),var(--rose),var(--rose-soft));
-  opacity:.85;
-}
-.corner{position:absolute; width:74px; height:74px; color:var(--rose); opacity:.24; pointer-events:none}
-.corner.tl{top:16px; left:14px}
-.corner.br{bottom:14px; right:14px; transform:rotate(180deg)}
-
-.eyebrow{
-  font-family:var(--f-sans); font-weight:800;
-  font-size:12.5px; letter-spacing:.22em; text-transform:uppercase;
-  color:var(--gold); margin:0 0 14px;
-}
-.hello{
-  font-family:var(--f-script);
-  font-size:clamp(30px,7.4vw,46px);
-  color:var(--rose-deep);
-  margin:0 0 6px; line-height:1.2;
-}
-h1{
-  font-family:var(--f-serif);
-  font-weight:600;
-  font-size:clamp(29px,6.6vw,45px);
-  line-height:1.14;
-  letter-spacing:.005em;
-  color:var(--plum);
-  margin:10px 0 0;
+/* ---------- Крупная типографика ---------- */
+.display{
+  font-family:var(--f-display);
+  font-weight:900;
+  line-height:.9;
+  letter-spacing:-.035em;
+  text-transform:uppercase;
+  margin:0;
   text-wrap:balance;
 }
-.lede{
-  font-size:clamp(16px,2.7vw,18px);
-  line-height:1.68;
-  color:var(--plum-soft);
-  margin:16px auto 0;
-  max-width:44ch;
-  text-wrap:pretty;
+.d-xl{font-size:clamp(46px,13.5vw,132px)}
+.d-lg{font-size:clamp(27px,5.6vw,52px); line-height:1; max-width:14ch}
+.d-md{font-size:clamp(23px,5vw,38px); line-height:1}
+.stroke{
+  color:var(--cream);
+  text-shadow:
+     4px 4px 0 var(--coral),
+     8px 8px 0 rgba(0,0,0,.45);
 }
-.rule{
-  width:120px; height:1px; margin:24px auto 4px;
-  background:linear-gradient(90deg,transparent,rgba(184,57,94,.4),transparent);
-  position:relative;
-}
-.rule::after{
-  content:"✦"; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-  background:linear-gradient(180deg,#FFFDFB,#FFF7F3); padding:0 10px;
-  color:var(--gold); font-size:13px;
+.coral{color:var(--coral)} .gold{color:var(--gold)} .mint{color:var(--mint)}
+.pixel{font-family:var(--f-pixel); font-weight:400; letter-spacing:0; line-height:1.7}
+.lead{
+  font-size:clamp(15.5px,2.4vw,18px); line-height:1.62; color:var(--dim);
+  max-width:46ch; margin:0; text-wrap:pretty;
 }
 
-/* Иллюстрация: столик при свечах */
-.scene-art{width:min(340px,86%); margin:2px auto 4px; display:block}
-.flame{transform-origin:160px 96px; animation:flicker 1.8s ease-in-out infinite}
-@keyframes flicker{
-  0%,100%{transform:scale(1) rotate(0deg)}
-  25%{transform:scale(1.06,.95) rotate(-2.5deg)}
-  50%{transform:scale(.95,1.07) rotate(1.5deg)}
-  75%{transform:scale(1.04,.97) rotate(2deg)}
+/* ---------- Экран 1 ---------- */
+.hero{display:flex; flex-direction:column; align-items:center; gap:18px; text-align:center}
+.hero-cats{display:flex; align-items:flex-end; justify-content:center; gap:clamp(10px,3vw,30px)}
+/* у стикеров дно обрезано ровной линией — на кремовой карточке это читается как край наклейки */
+.hero-cats img{
+  width:clamp(88px,20vw,132px); height:auto;
+  background:var(--cream);
+  border:3px solid var(--line);
+  box-shadow:7px 7px 0 0 rgba(0,0,0,.5);
+  padding:6px;
 }
-.glow{animation:glowPulse 1.8s ease-in-out infinite}
-@keyframes glowPulse{0%,100%{opacity:.5}50%{opacity:.85}}
-.art-heart{animation:floatUp 4.2s ease-in-out infinite}
-.art-heart.h2{animation-duration:5.1s; animation-delay:-1.4s}
-.art-heart.h3{animation-duration:4.7s; animation-delay:-2.7s}
-@keyframes floatUp{
-  0%{transform:translateY(6px); opacity:0}
-  25%{opacity:.85}
-  100%{transform:translateY(-26px); opacity:0}
-}
+.hero-cats img:nth-child(1){transform:rotate(-6deg)}
+.hero-cats img:nth-child(2){transform:rotate(5deg)}
+.blink{animation:blink 1.15s steps(2,end) infinite}
+@keyframes blink{50%{opacity:0}}
 
-/* Кнопки */
-.actions{
-  margin-top:26px;
-  display:flex; align-items:center; justify-content:center;
-  gap:16px; flex-wrap:wrap;
-  min-height:64px;
-}
+/* ---------- Кнопки ---------- */
 .btn{
-  font-family:var(--f-sans); font-weight:800;
-  border:0; border-radius:999px;
+  font-family:var(--f-display); font-weight:800;
+  text-transform:uppercase; letter-spacing:-.01em;
+  border:3px solid var(--line);
+  background:var(--coral); color:var(--ink);
   cursor:pointer;
   display:inline-flex; align-items:center; justify-content:center; gap:10px;
-  min-height:56px; min-width:120px;
-  padding:16px 30px;
-  font-size:19px; line-height:1;
-  transition:box-shadow .28s var(--ease), filter .2s var(--ease),
-             font-size .4s var(--ease), padding .4s var(--ease),
-             min-height .4s var(--ease), background-color .2s;
+  min-height:60px; min-width:132px;
+  padding:16px 30px; font-size:20px; line-height:1;
+  box-shadow:8px 8px 0 0 rgba(0,0,0,.55);
+  transition:box-shadow .16s var(--ease), background-color .16s, color .16s,
+             font-size .35s var(--ease), padding .35s var(--ease), min-height .35s var(--ease);
   -webkit-tap-highlight-color:transparent;
 }
-.btn:focus-visible{outline:3px solid var(--rose-deep); outline-offset:4px}
-.btn-yes{
-  color:#fff;
-  background:linear-gradient(135deg,#EC6288 0%,#B8395E 100%);
-  box-shadow:0 16px 30px -14px rgba(160,40,80,.85), inset 0 1px 0 rgba(255,255,255,.28);
-  animation:beat 2.4s ease-in-out infinite;
-}
-.btn-yes:hover{box-shadow:0 22px 42px -14px rgba(160,40,80,.95); filter:saturate(1.08)}
-.btn-yes svg{width:22px; height:22px; flex:none}
-@keyframes beat{0%,100%{box-shadow:0 16px 30px -14px rgba(160,40,80,.85), inset 0 1px 0 rgba(255,255,255,.28)}50%{box-shadow:0 16px 34px -12px rgba(160,40,80,.95), 0 0 0 8px rgba(232,87,124,.10), inset 0 1px 0 rgba(255,255,255,.28)}}
+.btn:hover{box-shadow:4px 4px 0 0 rgba(0,0,0,.55)}
+.btn:active{box-shadow:0 0 0 0 rgba(0,0,0,.55)}
+.btn:focus-visible{outline:4px solid var(--gold); outline-offset:4px}
+.btn svg{width:22px; height:22px; flex:none}
 
+.btn-start{background:var(--gold); font-size:clamp(20px,4.6vw,28px); padding:20px 40px; min-height:68px}
+.btn-yes{background:var(--coral)}
 .btn-no{
-  background:#FFFFFF;
-  color:var(--plum-soft);
-  box-shadow:0 8px 20px -12px rgba(90,40,60,.5), inset 0 0 0 2px rgba(107,74,88,.22);
-  white-space:nowrap;
-}
-.btn-no:hover{color:var(--plum)}
-.btn-no.loose{
-  position:fixed;
-  z-index:var(--z-runaway);
-  margin:0;
-  transition:left .34s var(--ease), top .34s var(--ease), transform .34s var(--ease),
-             font-size .3s var(--ease), padding .3s var(--ease),
-             min-height .3s var(--ease), min-width .3s var(--ease), opacity .3s var(--ease);
-}
-.btn-no.poof{opacity:0; transform:scale(.3) rotate(24deg)}
-#noSpacer{display:none}
-#noSpacer.on{display:block}
-
-.reaction{
-  font-family:var(--f-script);
-  font-size:clamp(20px,4.4vw,26px);
-  color:var(--rose-deep);
-  min-height:1.6em;
-  margin:18px 0 0;
-  opacity:0;
-  transform:translateY(6px);
-  transition:opacity .3s var(--ease), transform .3s var(--ease);
-}
-.reaction.show{opacity:1; transform:none}
-
-/* ============================================================
-   Сцена 3 — "да"
-   ============================================================ */
-.yay{
-  font-family:var(--f-script);
-  font-size:clamp(56px,16vw,110px);
-  line-height:.95;
-  color:var(--rose-deep);
-  margin:0;
-  text-shadow:0 10px 30px rgba(184,57,94,.22);
-  animation:pop .8s var(--ease) both;
-}
-@keyframes pop{0%{transform:scale(.5) rotate(-6deg); opacity:0}60%{transform:scale(1.06) rotate(1deg)}100%{transform:none; opacity:1}}
-
-.details{
-  width:min(560px,100%);
-  background:linear-gradient(180deg,#FFFDFB,#FFF5F0);
-  border:1px solid rgba(184,57,94,.15);
-  border-radius:var(--r-lg);
-  box-shadow:var(--sh-lift);
-  padding:clamp(24px,5vw,38px);
-  position:relative; overflow:hidden;
-}
-.details::before{
-  content:""; position:absolute; left:0; right:0; top:0; height:5px;
-  background:linear-gradient(90deg,var(--rose-soft),var(--gold),var(--rose-soft));
-}
-.details h2{
-  font-family:var(--f-serif); font-weight:600;
-  font-size:clamp(23px,4.6vw,30px); margin:0 0 4px; color:var(--plum);
-  text-align:center;
-}
-.details .sub{
-  font-size:14.5px; color:var(--plum-soft); text-align:center; margin:0 0 22px;
-}
-.rows{display:grid; gap:2px; text-align:left}
-.row{
-  display:flex; align-items:flex-start; gap:14px;
-  padding:14px 4px;
-  border-bottom:1px dashed rgba(184,57,94,.18);
-}
-.row:last-child{border-bottom:0}
-.row .ic{
-  width:38px; height:38px; flex:none; border-radius:12px;
-  display:grid; place-items:center;
-  background:linear-gradient(140deg,#FFE7EE,#FFDCE7);
-  color:var(--rose-deep);
-}
-.row .ic svg{width:20px; height:20px}
-.row > span:last-child{flex:1 1 auto; min-width:0}
-.row .k{display:block; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); font-weight:800; margin-bottom:4px}
-.row .v{display:block; font-family:var(--f-serif); font-size:clamp(18px,3.4vw,21px); font-weight:600; color:var(--plum); line-height:1.35; overflow-wrap:anywhere;
-  font-variant-numeric:lining-nums; font-feature-settings:"lnum" 1}
-
-.yes-note{
-  font-family:var(--f-serif);
-  font-size:clamp(18px,3.6vw,22px);
-  line-height:1.6; color:var(--plum);
-  max-width:34ch; margin:0 auto; text-align:center;
-}
-.sign{
-  font-family:var(--f-script);
-  font-size:clamp(24px,5vw,32px);
-  color:var(--rose-deep); text-align:center; margin:6px 0 0;
+  background:var(--ink-2); color:var(--cream);
+  box-shadow:6px 6px 0 0 rgba(0,0,0,.55);
+  white-space:nowrap; font-size:18px; min-height:54px; min-width:118px; padding:14px 24px;
 }
 .btn-ghost{
-  background:#fff; color:var(--rose-deep);
-  box-shadow:0 10px 24px -14px rgba(90,40,60,.5), inset 0 0 0 2px rgba(184,57,94,.28);
-  font-size:16px; min-height:52px; padding:14px 24px;
+  background:transparent; color:var(--cream);
+  font-size:15px; min-height:52px; min-width:0; padding:14px 20px;
+  box-shadow:6px 6px 0 0 rgba(0,0,0,.55);
 }
-.btn-ghost:hover{box-shadow:0 14px 28px -14px rgba(90,40,60,.6), inset 0 0 0 2px rgba(184,57,94,.5)}
-.btn-ghost svg{width:19px; height:19px}
+.btn-ghost:hover{background:var(--cream); color:var(--ink)}
 
-/* ============================================================
-   UI
-   ============================================================ */
-.sound-toggle{
-  position:fixed; top:max(14px, env(safe-area-inset-top)); right:14px;
-  z-index:var(--z-ui);
-  width:46px; height:46px; border-radius:50%;
-  border:0; cursor:pointer;
-  background:rgba(255,255,255,.86);
-  backdrop-filter:blur(8px);
-  box-shadow:0 8px 20px -12px rgba(90,40,60,.6), inset 0 0 0 1px rgba(184,57,94,.18);
-  color:var(--rose-deep);
+.btn-no.loose{
+  position:fixed; z-index:var(--z-runaway); margin:0;
+  transition:left .3s var(--ease), top .3s var(--ease), transform .3s var(--ease),
+             font-size .3s var(--ease), padding .3s var(--ease),
+             min-height .3s var(--ease), min-width .3s var(--ease),
+             opacity .3s var(--ease), box-shadow .16s var(--ease);
+}
+.btn-no.poof{opacity:0; transform:scale(.35) rotate(20deg)}
+#noSpacer{display:none} #noSpacer.on{display:block}
+
+/* ---------- Карточка вопроса ---------- */
+.ask-card{
+  width:min(720px,100%);
+  padding:clamp(56px,9vw,74px) clamp(22px,4.4vw,44px) clamp(24px,4.4vw,38px);
+  display:flex; flex-direction:column; align-items:center; gap:14px;
+  text-align:center;
+  position:relative;
+  transform:rotate(-.7deg);
+  margin-top:clamp(46px,10vw,64px);
+}
+/* кот-стикер «наклеен» поверх верхней границы карточки */
+.ask-card .cat-beg{
+  position:absolute; left:50%; top:0;
+  transform:translate(-50%,-66%) rotate(5deg);
+  width:clamp(116px,24vw,168px); height:auto;
+  filter:drop-shadow(6px 6px 0 rgba(0,0,0,.45));
+  pointer-events:none;
+}
+.actions{
+  display:flex; align-items:center; justify-content:center;
+  gap:16px; flex-wrap:wrap; margin-top:8px; min-height:66px;
+}
+.reaction-wrap{
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  min-height:74px; margin-top:6px;
+}
+.reaction-cat{width:76px; height:76px; object-fit:contain; opacity:0; transition:opacity .25s var(--ease)}
+.reaction-cat.show{opacity:1}
+.bubble{
+  position:relative;
+  font-family:var(--f-pixel); font-size:clamp(11px,1.9vw,13px); line-height:1.7;
+  color:var(--ink); background:var(--gold);
+  border:2px solid var(--line);
+  padding:9px 14px; max-width:30ch;
+  opacity:0; transform:translateY(6px);
+  transition:opacity .25s var(--ease), transform .25s var(--ease);
+}
+.bubble.show{opacity:1; transform:none}
+.bubble::after{
+  content:""; position:absolute; left:-9px; top:50%; margin-top:-6px;
+  width:0; height:0; border:6px solid transparent; border-right-color:var(--gold);
+}
+
+/* ---------- Экран 3: маршрут ---------- */
+.route{
+  width:min(700px,100%);
+  padding:clamp(20px,4vw,34px);
+  position:relative;
+  transform:rotate(.6deg);
+}
+/* штамп «маршрут утверждён» */
+.stamp{
+  position:absolute; right:-14px; top:-22px;
+  transform:rotate(-13deg);
+  font-family:var(--f-pixel); font-weight:400;
+  font-size:10px; letter-spacing:0; line-height:1.6; text-transform:uppercase;
+  color:var(--ink); background:var(--mint);
+  border:3px solid var(--line);
+  padding:8px 14px;
+  box-shadow:5px 5px 0 0 rgba(0,0,0,.5);
+  z-index:2;
+}
+.route-head{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  border-bottom:3px dashed var(--ink-3); padding-bottom:14px; margin-bottom:6px;
+  flex-wrap:wrap;
+}
+.stop{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:clamp(12px,3vw,20px);
+  align-items:start;
+  padding:22px 0;
+  position:relative;
+}
+.stop + .stop{border-top:3px dashed var(--ink-3)}
+.stop-num{
+  font-family:var(--f-pixel); font-weight:400;
+  font-size:clamp(19px,4.2vw,28px); line-height:1;
+  color:var(--ink); background:var(--gold);
+  border:3px solid var(--line);
+  width:clamp(54px,12vw,68px); height:clamp(54px,12vw,68px);
   display:grid; place-items:center;
-  transition:box-shadow .25s var(--ease), color .2s;
+  flex:none;
 }
-.sound-toggle:hover{box-shadow:0 12px 26px -12px rgba(90,40,60,.7), inset 0 0 0 1px rgba(184,57,94,.4)}
-.sound-toggle:focus-visible{outline:3px solid var(--rose-deep); outline-offset:3px}
-.sound-toggle svg{width:22px; height:22px}
+.stop:nth-child(odd) .stop-num{background:var(--mint)}
+.stop-title{
+  font-family:var(--f-display); font-weight:800; text-transform:uppercase;
+  font-size:clamp(19px,4vw,27px); line-height:1.06; letter-spacing:-.02em;
+  margin:0 0 8px; color:var(--cream);
+}
+.stop-meta{
+  display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px;
+}
+.chip{
+  font-family:var(--f-pixel); font-size:10px; letter-spacing:0; line-height:1.6;
+  border:2px solid var(--ink-3); color:var(--gold);
+  padding:7px 10px; text-transform:uppercase;
+}
+.stop-note{font-size:15px; line-height:1.55; color:var(--dim); margin:0}
+/* коты у пунктов — как наклеенные фотокарточки, иначе тёмный кот тонет в фоне */
+.stop-cat{
+  width:clamp(70px,15vw,96px); height:auto; align-self:center;
+  background:var(--cream);
+  border:3px solid var(--line);
+  box-shadow:5px 5px 0 0 rgba(0,0,0,.5);
+  padding:5px;
+  transform:rotate(3deg);
+}
+.stop:nth-child(even) .stop-cat{transform:rotate(-4deg)}
+.route-foot{
+  border-top:3px dashed var(--ink-3);
+  margin-top:6px; padding-top:18px;
+  display:flex; gap:12px; flex-wrap:wrap; justify-content:center;
+}
 
-.sr-only{
-  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
-  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+/* Пиксельные коты, идущие по низу экрана */
+.parade{
+  position:relative; height:70px; width:100%;
+  overflow:hidden;
+  border-top:3px dashed var(--ink-3);
+  margin-top:2px;
+}
+.walker{
+  position:absolute; bottom:6px; left:-72px;
+  width:64px; height:64px;
+  background-image:url("assets/cats/oneko.gif");
+  background-size:512px 256px;              /* 8×4 спрайта по 64px */
+  background-position:-192px 0;             /* кадр «идёт вправо» */
+  image-rendering:pixelated;
+  animation:walkX 11s linear infinite, walkFrame .28s steps(1,end) infinite;
+}
+.walker.w2{animation-duration:14s,.34s; animation-delay:-5s,0s; transform:scale(.8)}
+.walker.w3{animation-duration:9s,.24s;  animation-delay:-2.5s,0s; transform:scale(.66)}
+@keyframes walkX{from{left:-72px}to{left:100%}}
+@keyframes walkFrame{0%{background-position:-192px 0}50%{background-position:-192px -64px}}
+
+/* ---------- Кот, который гоняется за кнопкой ---------- */
+#neko{
+  position:fixed; width:64px; height:64px;
+  background-image:url("assets/cats/oneko.gif");
+  background-size:512px 256px;
+  image-rendering:pixelated;
+  z-index:var(--z-neko);
+  pointer-events:none;
+  display:none;
 }
 
-/* ============================================================
-   Адаптив
-   ============================================================ */
-@media (max-width:420px){
-  .btn{font-size:18px; padding:15px 24px; min-width:110px}
-  .actions{gap:12px}
-  .card{border-radius:24px}
+/* ---------- Звук ---------- */
+.sound-toggle{
+  position:fixed; top:48px; right:12px; z-index:var(--z-ui);
+  width:48px; height:48px;
+  border:3px solid var(--line); background:var(--ink-2); color:var(--gold);
+  cursor:pointer; display:grid; place-items:center;
+  box-shadow:5px 5px 0 0 rgba(0,0,0,.55);
+  transition:box-shadow .16s var(--ease), background-color .16s, color .16s;
 }
-@media (min-width:1024px){
-  .scene > .inner{gap:26px}
+.sound-toggle:hover{background:var(--gold); color:var(--ink); box-shadow:2px 2px 0 0 rgba(0,0,0,.55)}
+.sound-toggle:focus-visible{outline:4px solid var(--gold); outline-offset:4px}
+.sound-toggle svg{width:21px; height:21px}
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.sign{font-family:var(--f-pixel); font-size:clamp(11px,2.1vw,14px); line-height:1.8; color:var(--dim); text-align:center; margin:0}
+
+@media (max-width:560px){
+  .hard{box-shadow:7px 7px 0 0 var(--coral)}
+  .btn{font-size:18px; padding:14px 22px; min-width:118px; min-height:56px}
+  .stop{grid-template-columns:auto 1fr; }
+  .stop-cat{grid-column:1 / -1; justify-self:center; margin-top:6px}
 }
 
-/* Уважаем настройку «уменьшить движение» */
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{
-    animation-duration:.001ms !important;
-    animation-iteration-count:1 !important;
+    animation-duration:.001ms !important; animation-iteration-count:1 !important;
     transition-duration:.001ms !important;
   }
   .btn-no.loose{transition:none}
+  .ticker-track{animation:none}
 }
 </style>
 </head>
 <body>
 
-<canvas id="fx" aria-hidden="true"></canvas>
+<div class="bg" aria-hidden="true"></div>
+<canvas id="fx" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:2;pointer-events:none"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
 
 <button class="sound-toggle" id="soundBtn" type="button" aria-pressed="true" aria-label="Выключить звук">
-  <svg id="soundIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <svg id="soundIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>
   </svg>
 </button>
 
-<!-- ═══════════ Сцена 1: конверт ═══════════ -->
-<section class="scene active" id="sceneEnvelope" aria-label="Конверт">
+<div id="neko" aria-hidden="true"></div>
+
+<!-- ═══════════ 1. СТАРТ ═══════════ -->
+<section class="scene active" id="sceneStart" aria-label="Начало">
   <div class="inner">
-    <p class="env-caption" id="envCaption">Тебе письмо</p>
+    <div class="hero">
+      <span class="tag"><i class="star" aria-hidden="true"></i> входящее сообщение</span>
 
-    <div class="env-stage">
-      <button class="envelope" id="envelope" type="button" aria-label="Открыть конверт">
-        <span class="env-body"></span>
-        <span class="env-letter" aria-hidden="true">
-          <span class="lw">
-            <span class="l-line" style="width:62%"></span>
-            <span class="l-line" style="width:100%"></span>
-            <span class="l-line" style="width:88%"></span>
-            <span class="l-line" style="width:94%"></span>
-            <span class="l-line" style="width:48%"></span>
-          </span>
-        </span>
-        <span class="env-pocket"></span>
-        <span class="env-flap"><span class="f-face"></span></span>
-        <span class="wax" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="rgba(255,255,255,.92)"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-        </span>
-      </button>
+      <div class="hero-cats">
+        <img src="assets/cats/cat-love.gif" alt="" width="200" height="167">
+        <img src="assets/cats/cat-happy.gif" alt="" width="200" height="179">
+      </div>
+
+      <h1 class="display d-xl stroke" id="heroName">Привет</h1>
+      <p class="lead" id="heroLead">Тут для тебя кое-что. Ничего страшного, обещаю — но отказаться будет непросто.</p>
+
+      <button class="btn btn-start" id="btnStart" type="button">Открыть</button>
+      <p class="pixel" style="color:var(--dim);font-size:11px;margin:8px 0 0">
+        со звуком веселее <span class="blink">_</span>
+      </p>
     </div>
-
-    <span class="tap-hint" id="tapHint">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M12 5v14"/><path d="m19 12-7 7-7-7"/>
-      </svg>
-      нажми, чтобы открыть
-    </span>
   </div>
 </section>
 
-<!-- ═══════════ Сцена 2: вопрос ═══════════ -->
-<section class="scene" id="sceneAsk" aria-label="Приглашение">
+<!-- ═══════════ 2. ВОПРОС ═══════════ -->
+<section class="scene" id="sceneAsk" aria-label="Вопрос">
   <div class="inner">
-    <article class="card">
-      <svg class="corner tl" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-        <path d="M4 40c0-20 16-36 36-36"/><path d="M4 56c0-28 24-52 52-52"/>
-        <circle cx="10" cy="10" r="2.4" fill="currentColor" stroke="none"/>
-      </svg>
-      <svg class="corner br" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-        <path d="M4 40c0-20 16-36 36-36"/><path d="M4 56c0-28 24-52 52-52"/>
-        <circle cx="10" cy="10" r="2.4" fill="currentColor" stroke="none"/>
-      </svg>
-
-      <p class="eyebrow">персональное приглашение</p>
-      <p class="hello" id="hello">Привет</p>
-
-      <!-- Столик при свечах -->
-      <svg class="scene-art" viewBox="0 0 320 210" role="img" aria-label="Столик на двоих при свечах">
-        <defs>
-          <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#FFC46B" stop-opacity=".85"/>
-            <stop offset="60%" stop-color="#FFB347" stop-opacity=".22"/>
-            <stop offset="100%" stop-color="#FFB347" stop-opacity="0"/>
-          </radialGradient>
-          <linearGradient id="gFlame" x1="0" y1="1" x2="0" y2="0">
-            <stop offset="0%" stop-color="#FF8A3D"/><stop offset="55%" stop-color="#FFB547"/><stop offset="100%" stop-color="#FFE08A"/>
-          </linearGradient>
-          <linearGradient id="gWine" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#E8577C"/><stop offset="100%" stop-color="#A32848"/>
-          </linearGradient>
-          <linearGradient id="gCloth" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#FFF3EC"/><stop offset="100%" stop-color="#F7DCD2"/>
-          </linearGradient>
-        </defs>
-
-        <!-- свет от свечи -->
-        <circle class="glow" cx="160" cy="104" r="86" fill="url(#gGlow)"/>
-
-        <!-- парящие сердечки -->
-        <g fill="#E8577C" opacity=".9">
-          <g transform="translate(88 56) scale(.66)"><path class="art-heart h1" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></g>
-          <g transform="translate(206 48) scale(.54)"><path class="art-heart h2" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></g>
-          <g transform="translate(152 22) scale(.46)"><path class="art-heart h3" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></g>
-        </g>
-
-        <!-- пламя -->
-        <g class="flame">
-          <path d="M160 62c11 12 10 22 4 28-3 3-8 3-11 0-6-6-6-16 7-28z" fill="url(#gFlame)"/>
-          <path d="M160 78c4 5 4 9 1 12-1.6 1.6-4.4 1.6-6 0-2.4-2.6-2-6.6 5-12z" fill="#FFF3C4" opacity=".95"/>
-        </g>
-        <!-- свеча -->
-        <rect x="150" y="94" width="20" height="52" rx="7" fill="#FFF6EE" stroke="#EBD3C6" stroke-width="1.4"/>
-        <path d="M150 108c6 3 14 3 20 0" stroke="#F0DACD" stroke-width="1.4" fill="none"/>
-        <line x1="160" y1="90" x2="160" y2="95" stroke="#8A6B5C" stroke-width="2" stroke-linecap="round"/>
-
-        <!-- бокалы -->
-        <g stroke="#C9A9A0" stroke-width="2" fill="none" stroke-linecap="round">
-          <path d="M84 96c0 16 8 26 16 26s16-10 16-26z" fill="#FFFBF8"/>
-          <path d="M86 102c8 5 22 5 28 0" stroke="none" fill="url(#gWine)" opacity=".9"/>
-          <line x1="100" y1="122" x2="100" y2="140"/>
-          <path d="M88 144h24"/>
-          <path d="M204 96c0 16 8 26 16 26s16-10 16-26z" fill="#FFFBF8"/>
-          <path d="M206 102c8 5 22 5 28 0" stroke="none" fill="url(#gWine)" opacity=".9"/>
-          <line x1="220" y1="122" x2="220" y2="140"/>
-          <path d="M208 144h24"/>
-        </g>
-
-        <!-- столик -->
-        <ellipse cx="160" cy="150" rx="118" ry="12" fill="#F3D6CB" opacity=".55"/>
-        <rect x="42" y="144" width="236" height="13" rx="6.5" fill="url(#gCloth)" stroke="#EBCFC4" stroke-width="1.2"/>
-        <path d="M60 157c14 22 46 30 100 30s86-8 100-30z" fill="url(#gCloth)" stroke="#EBCFC4" stroke-width="1.2"/>
-        <path d="M92 172c12 6 28 9 68 9s56-3 68-9" stroke="#EEDBD1" stroke-width="1.6" fill="none"/>
-      </svg>
-
-      <h1 id="question">Пойдёшь со мной на свидание?</h1>
-      <p class="lede" id="lede"></p>
-
-      <div class="rule"></div>
+    <article class="ask-card hard">
+      <img class="cat-beg" src="assets/cats/cat-beg.gif" alt="Кот умоляюще складывает лапки" width="200" height="186">
+      <span class="tag"><i class="star" aria-hidden="true"></i> вопрос дня</span>
+      <h2 class="display d-lg" id="question">Пойдёшь со мной на свидание?</h2>
+      <p class="lead" id="askLead"></p>
 
       <div class="actions">
         <button class="btn btn-yes" id="btnYes" type="button">
@@ -586,33 +460,46 @@ h1{
         <button class="btn btn-no" id="btnNo" type="button" aria-label="Нет — но эта кнопка убегает">Нет</button>
       </div>
 
-      <p class="reaction" id="reaction" role="status" aria-live="polite"></p>
+      <div class="reaction-wrap">
+        <img class="reaction-cat" id="reactionCat" src="assets/cats/cat-cry.gif" alt="" width="262" height="207">
+        <p class="bubble" id="reaction" role="status" aria-live="polite"></p>
+      </div>
     </article>
   </div>
 </section>
 
-<!-- ═══════════ Сцена 3: «да» ═══════════ -->
-<section class="scene" id="sceneYes" aria-label="Ты сказала да">
+<!-- ═══════════ 3. МАРШРУТ ═══════════ -->
+<section class="scene" id="sceneYes" aria-label="Маршрут свидания">
   <div class="inner">
-    <p class="yay">Ура!</p>
-    <p class="yes-note" id="yesNote">Я знал, что ты согласишься. Тогда договорились —</p>
+    <h2 class="display d-xl stroke" style="text-align:center">Да!!!</h2>
+    <p class="lead" style="text-align:center" id="yesLead">Так и знал. Тогда держи программу — она из двух частей.</p>
 
-    <article class="details">
-      <h2>Наше свидание</h2>
-      <p class="sub" id="detailsSub">детали, чтобы ты ничего не забыла</p>
-      <div class="rows" id="detailRows"></div>
-      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:24px">
+    <article class="route hard">
+      <span class="stamp" aria-hidden="true">маршрут утверждён</span>
+
+      <div class="route-head">
+        <span class="tag"><i class="star" aria-hidden="true"></i> маршрут</span>
+        <span class="pixel" style="color:var(--dim);font-size:10px" id="routeDate"></span>
+      </div>
+
+      <div id="stops"></div>
+
+      <div class="parade" aria-hidden="true">
+        <div class="walker"></div><div class="walker w2"></div><div class="walker w3"></div>
+      </div>
+
+      <div class="route-foot">
         <button class="btn btn-ghost" id="btnIcs" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/>
           </svg>
-          Добавить в календарь
+          В календарь
         </button>
         <button class="btn btn-ghost" id="btnAgain" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/>
           </svg>
-          Ещё разок
+          Ещё раз
         </button>
       </div>
     </article>
@@ -626,41 +513,46 @@ h1{
    ⚙️  НАСТРОЙКИ — меняй только этот блок
    ============================================================ */
 const CONFIG = {
-  name:      "Алиса",                  // её имя (пусто — будет «Привет, красивая»)
-  place:     "Грузинский ресторан",    // ресторан
-  date:      "суббота, 22 августа",    // дата словами
-  time:      "14:00",                  // время
-  address:   "",                       // адрес (пусто — строка не показывается)
-  pickup:    "",                       // доп. строка, напр. "заеду за тобой в 13:30"
-  signature: "Андрей",                 // твоё имя для подписи
+  name:      "Алиса",                 // её имя
+  nameGen:   "",                      // имя в родительном падеже («только для Алисы»).
+                                      // пусто — просклоняется само; впиши руками, если ошибётся
+  signature: "Андрей",                // твоё имя для подписи
+  date:      "суббота, 22 августа",   // дата словами
 
-  // текст под приветствием (пусто — подставится стандартный)
-  lede: "Я тут подумал… нам с тобой срочно нужны хачапури, вино и долгий разговор ни о чём. Место я уже присмотрел. Осталась одна маленькая деталь.",
+  // Пункт 1
+  place1:    "Грузинский ресторан",
+  time1:     "14:00",
+  note1:     "Хачапури, вино и долгий разговор ни о чём. Стол уже присмотрен.",
 
-  // для кнопки «Добавить в календарь» (если пусто — кнопка спрячется)
+  // Пункт 2
+  place2:    "Кошачья деревня",
+  time2:     "сразу после",
+  note2:     "Десятки котов, и все они будут твои. Хотя бы на пару часов.",
+
+  // Текст на карточке с вопросом
+  askLead:   "Программа уже готова, и в ней есть коты. Много котов. Но сначала — формальность.",
+
+  // Кнопка «В календарь» (пусто — кнопка спрячется)
   icsStart:  "2026-08-22T14:00",
-  icsEnd:    "2026-08-22T17:00"
+  icsEnd:    "2026-08-22T18:00"
 };
 
 /* ============================================================
    Служебное
    ============================================================ */
-const $  = (s) => document.querySelector(s);
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = (s) => document.querySelector(s);
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const rand = (a, b) => a + Math.random() * (b - a);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
-/* ---------- Звук (Web Audio, без файлов) ---------- */
+/* ---------- Аркадный звук (Web Audio, без файлов) ---------- */
 let actx = null, soundOn = true;
 function audio() {
-  if (!actx) {
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if (AC) actx = new AC();
-  }
+  if (!actx) { const AC = window.AudioContext || window.webkitAudioContext; if (AC) actx = new AC(); }
   if (actx && actx.state === 'suspended') actx.resume();
   return actx;
 }
-function tone(freq, dur = .18, type = 'sine', vol = .07, delay = 0, glideTo = null) {
+function tone(freq, dur = .12, type = 'square', vol = .05, delay = 0, glideTo = null) {
   if (!soundOn) return;
   const ctx = audio(); if (!ctx) return;
   const t0 = ctx.currentTime + delay;
@@ -669,17 +561,17 @@ function tone(freq, dur = .18, type = 'sine', vol = .07, delay = 0, glideTo = nu
   osc.frequency.setValueAtTime(freq, t0);
   if (glideTo) osc.frequency.exponentialRampToValueAtTime(glideTo, t0 + dur);
   g.gain.setValueAtTime(0.0001, t0);
-  g.gain.exponentialRampToValueAtTime(vol, t0 + .015);
+  g.gain.exponentialRampToValueAtTime(vol, t0 + .012);
   g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
   osc.connect(g).connect(ctx.destination);
   osc.start(t0); osc.stop(t0 + dur + .05);
 }
 const sfx = {
-  open:  () => { tone(523.25, .5, 'sine', .06, 0); tone(783.99, .6, 'sine', .045, .1); },
-  pop:   () => tone(rand(560, 900), .12, 'triangle', .05, 0, rand(240, 420)),
-  hover: () => tone(rand(700, 1100), .07, 'sine', .025),
-  yes:   () => { [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => tone(f, .55, 'sine', .07, i * .09)); },
-  tap:   () => tone(660, .1, 'sine', .04)
+  start: () => { [392, 523.25, 659.25, 784].forEach((f, i) => tone(f, .13, 'square', .05, i * .07)); },
+  pop:   () => tone(rand(520, 880), .09, 'square', .045, 0, rand(220, 380)),
+  meow:  () => { tone(680, .16, 'sawtooth', .035, 0, 420); tone(520, .12, 'sine', .025, .1, 700); },
+  win:   () => { [523.25, 659.25, 784, 1046.5, 1318.5].forEach((f, i) => tone(f, .3, 'square', .05, i * .085)); },
+  tick:  () => tone(880, .06, 'square', .035)
 };
 
 const soundBtn = $('#soundBtn'), soundIcon = $('#soundIcon');
@@ -690,176 +582,229 @@ soundBtn.addEventListener('click', () => {
   soundIcon.innerHTML = soundOn ? ICON_ON : ICON_OFF;
   soundBtn.setAttribute('aria-pressed', String(soundOn));
   soundBtn.setAttribute('aria-label', soundOn ? 'Выключить звук' : 'Включить звук');
-  if (soundOn) sfx.tap();
+  if (soundOn) sfx.tick();
 });
 
 /* ============================================================
-   Фоновые частицы: сердечки и лепестки
+   Бегущая строка
    ============================================================ */
-const cvs = $('#fx'), ctx = cvs.getContext('2d');
-let W = 0, H = 0, DPR = 1, particles = [], confetti = [], rafId = null;
-
-function resizeCanvas() {
-  DPR = Math.min(window.devicePixelRatio || 1, 2);
-  W = window.innerWidth; H = window.innerHeight;
-  cvs.width = Math.floor(W * DPR); cvs.height = Math.floor(H * DPR);
-  cvs.style.width = W + 'px'; cvs.style.height = H + 'px';
-  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+/* «только для Алисы», а не «для Алиса» */
+function genitive(n) {
+  if (!n) return '';
+  const last = n.slice(-1).toLowerCase(), prev = n.slice(-2, -1).toLowerCase();
+  if (last === 'а') return n.slice(0, -1) + ('гкхжчшщ'.includes(prev) ? 'и' : 'ы');
+  if (last === 'я' || last === 'ь') return n.slice(0, -1) + 'и';
+  return n;                      // Эстер, Кэрол и подобные не склоняются
 }
+const NAME_GEN = (CONFIG.nameGen || '').trim() || genitive((CONFIG.name || '').trim());
 
-const PALETTE = ['#E8577C', '#F7A8BE', '#FBD9E3', '#F0A6A6', '#E0BE8A'];
-
-function heartPath(c, x, y, s, rot) {
-  c.save();
-  c.translate(x, y); c.rotate(rot); c.scale(s / 24, s / 24); c.translate(-12, -12);
-  c.beginPath();
-  c.moveTo(12, 21.35);
-  c.bezierCurveTo(6.6, 16.5, 2, 12.5, 2, 8.5);
-  c.bezierCurveTo(2, 5.42, 4.42, 3, 7.5, 3);
-  c.bezierCurveTo(9.24, 3, 10.91, 3.81, 12, 5.09);
-  c.bezierCurveTo(13.09, 3.81, 14.76, 3, 16.5, 3);
-  c.bezierCurveTo(19.58, 3, 22, 5.42, 22, 8.5);
-  c.bezierCurveTo(22, 12.5, 17.4, 16.5, 12, 21.35);
-  c.closePath();
-  c.fill();
-  c.restore();
-}
-function petalPath(c, x, y, s, rot) {
-  c.save();
-  c.translate(x, y); c.rotate(rot);
-  c.beginPath();
-  c.ellipse(0, 0, s * .62, s * .34, 0, 0, Math.PI * 2);
-  c.fill();
-  c.restore();
-}
-
-function makeParticle(seedTop) {
-  return {
-    x: rand(-40, W + 40),
-    y: seedTop ? rand(-H * .4, H) : H + rand(20, 160),
-    s: rand(11, 26),
-    vy: rand(-.42, -.16),
-    vx: rand(-.22, .22),
-    rot: rand(0, Math.PI * 2),
-    vr: rand(-.008, .008),
-    a: rand(.16, .5),
-    kind: Math.random() < .58 ? 'heart' : 'petal',
-    color: PALETTE[(Math.random() * PALETTE.length) | 0],
-    sway: rand(.4, 1.3),
-    phase: rand(0, Math.PI * 2)
-  };
-}
-function seedParticles() {
-  const count = Math.round(clamp(W * H / 34000, 14, 40));
-  particles = Array.from({ length: count }, () => makeParticle(true));
-}
-
-function burstConfetti(x, y, n = 90) {
-  for (let i = 0; i < n; i++) {
-    const ang = rand(-Math.PI, 0) + rand(-.35, .35);
-    const sp = rand(5, 15);
-    confetti.push({
-      x, y,
-      vx: Math.cos(ang) * sp,
-      vy: Math.sin(ang) * sp - rand(2, 6),
-      s: rand(7, 15),
-      rot: rand(0, Math.PI * 2),
-      vr: rand(-.22, .22),
-      color: PALETTE[(Math.random() * PALETTE.length) | 0],
-      kind: Math.random() < .5 ? 'heart' : 'rect',
-      life: rand(110, 200), age: 0
-    });
+{
+  const bits = [
+    NAME_GEN ? `только для ${NAME_GEN}` : 'только для тебя',
+    CONFIG.date || 'скоро',
+    'котики включены',
+    'отказ не предусмотрен',
+    CONFIG.place2 || 'сюрприз'
+  ];
+  const line = bits.join(' ♥ ') + ' ♥ ';
+  const track = $('#tickerTrack');
+  // два одинаковых блока подряд — чтобы стык был незаметен
+  for (let i = 0; i < 2; i++) {
+    const s = document.createElement('span');
+    s.textContent = line.repeat(3);
+    track.appendChild(s);
   }
 }
 
+/* ============================================================
+   Частицы: пиксельные сердечки и звёздочки
+   ============================================================ */
+const cvs = $('#fx'), ctx = cvs.getContext('2d');
+let W = 0, H = 0, DPR = 1, particles = [], confetti = [], rafId = null;
+const PALETTE = ['#FF5470', '#FFC24B', '#5FE3C0', '#A77BFF', '#FFEEDF'];
+
+function resizeCanvas() {
+  DPR = Math.min(devicePixelRatio || 1, 2);
+  W = innerWidth; H = innerHeight;
+  cvs.width = Math.floor(W * DPR); cvs.height = Math.floor(H * DPR);
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+/* сердце «по клеточкам» — в тон пиксельной теме */
+const HEART_MASK = [
+  [0,1,1,0,1,1,0],
+  [1,1,1,1,1,1,1],
+  [1,1,1,1,1,1,1],
+  [0,1,1,1,1,1,0],
+  [0,0,1,1,1,0,0],
+  [0,0,0,1,0,0,0]
+];
+function pixHeart(c, x, y, px, rot) {
+  c.save(); c.translate(x, y); c.rotate(rot); c.translate(-3.5 * px, -3 * px);
+  for (let r = 0; r < HEART_MASK.length; r++)
+    for (let q = 0; q < HEART_MASK[r].length; q++)
+      if (HEART_MASK[r][q]) c.fillRect(q * px, r * px, px, px);
+  c.restore();
+}
+function pixStar(c, x, y, px, rot) {
+  c.save(); c.translate(x, y); c.rotate(rot);
+  c.fillRect(-px / 2, -px * 1.5, px, px * 3);
+  c.fillRect(-px * 1.5, -px / 2, px * 3, px);
+  c.restore();
+}
+function makeParticle(seed) {
+  return {
+    x: rand(-40, W + 40), y: seed ? rand(-H * .3, H) : H + rand(20, 140),
+    px: Math.round(rand(2, 4)), vy: rand(-.5, -.18), vx: rand(-.2, .2),
+    rot: rand(0, Math.PI * 2), vr: rand(-.01, .01), a: rand(.18, .55),
+    kind: Math.random() < .55 ? 'heart' : 'star',
+    color: PALETTE[(Math.random() * PALETTE.length) | 0],
+    sway: rand(.4, 1.2), phase: rand(0, Math.PI * 2)
+  };
+}
+function seedParticles() {
+  particles = Array.from({ length: Math.round(clamp(W * H / 40000, 12, 34)) }, () => makeParticle(true));
+}
+function burstConfetti(x, y, n = 90) {
+  for (let i = 0; i < n; i++) {
+    const ang = rand(-Math.PI, 0) + rand(-.35, .35), sp = rand(5, 15);
+    confetti.push({
+      x, y, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp - rand(2, 6),
+      px: Math.round(rand(3, 6)), rot: rand(0, Math.PI * 2), vr: rand(-.2, .2),
+      color: PALETTE[(Math.random() * PALETTE.length) | 0],
+      kind: Math.random() < .5 ? 'heart' : 'star', life: rand(110, 200), age: 0
+    });
+  }
+}
 let lastT = 0;
 function frame(t) {
   rafId = requestAnimationFrame(frame);
   const dt = clamp((t - lastT) / 16.67, .2, 3); lastT = t;
   ctx.clearRect(0, 0, W, H);
-
   for (const p of particles) {
     p.phase += .012 * dt;
     p.y += p.vy * dt;
-    p.x += (p.vx + Math.sin(p.phase) * .28 * p.sway) * dt;
+    p.x += (p.vx + Math.sin(p.phase) * .26 * p.sway) * dt;
     p.rot += p.vr * dt;
     if (p.y < -60 || p.x < -80 || p.x > W + 80) Object.assign(p, makeParticle(false));
-    ctx.globalAlpha = p.a;
-    ctx.fillStyle = p.color;
-    (p.kind === 'heart' ? heartPath : petalPath)(ctx, p.x, p.y, p.s, p.rot);
+    ctx.globalAlpha = p.a; ctx.fillStyle = p.color;
+    (p.kind === 'heart' ? pixHeart : pixStar)(ctx, p.x, p.y, p.px, p.rot);
   }
-
   for (let i = confetti.length - 1; i >= 0; i--) {
     const c = confetti[i];
-    c.age += dt;
-    c.vy += .26 * dt;
-    c.vx *= 0.994; c.vy *= 0.994;
-    c.x += c.vx * dt; c.y += c.vy * dt;
-    c.rot += c.vr * dt;
+    c.age += dt; c.vy += .26 * dt; c.vx *= .994; c.vy *= .994;
+    c.x += c.vx * dt; c.y += c.vy * dt; c.rot += c.vr * dt;
     const life = 1 - c.age / c.life;
     if (life <= 0 || c.y > H + 80) { confetti.splice(i, 1); continue; }
-    ctx.globalAlpha = clamp(life * 1.4, 0, 1);
-    ctx.fillStyle = c.color;
-    if (c.kind === 'heart') heartPath(ctx, c.x, c.y, c.s, c.rot);
-    else {
-      ctx.save(); ctx.translate(c.x, c.y); ctx.rotate(c.rot);
-      ctx.fillRect(-c.s / 2, -c.s / 3, c.s, c.s * .66);
-      ctx.restore();
-    }
+    ctx.globalAlpha = clamp(life * 1.4, 0, 1); ctx.fillStyle = c.color;
+    (c.kind === 'heart' ? pixHeart : pixStar)(ctx, c.x, c.y, c.px, c.rot);
   }
   ctx.globalAlpha = 1;
 }
-
 function startFx() { if (!rafId) { lastT = performance.now(); rafId = requestAnimationFrame(frame); } }
 function stopFx() { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } }
 
 resizeCanvas(); seedParticles();
-if (!reduceMotion) startFx(); else { /* один статичный кадр */ frame(0); stopFx(); }
+if (!reduceMotion) startFx(); else { frame(0); stopFx(); }
+addEventListener('resize', () => { resizeCanvas(); seedParticles(); if (reduceMotion) { frame(0); stopFx(); } });
+document.addEventListener('visibilitychange', () => { document.hidden ? stopFx() : (reduceMotion || startFx()); });
 
-window.addEventListener('resize', () => { resizeCanvas(); seedParticles(); if (reduceMotion) { frame(0); stopFx(); } });
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) stopFx(); else if (!reduceMotion) startFx();
-});
+/* ============================================================
+   Кот, который гоняется за кнопкой «Нет»
+   (адаптировано из oneko.js © adryd, MIT — github.com/adryd325/oneko.js)
+   ============================================================ */
+const neko = (() => {
+  const el = $('#neko');
+  const S = 64;                       // спрайт 32px, показываем ×2
+  const sprites = {
+    idle:[[-3,-3]], alert:[[-7,-3]], scratch:[[-5,0],[-6,0],[-7,0]],
+    tired:[[-3,-2]], sleeping:[[-2,0],[-2,-1]],
+    N:[[-1,-2],[-1,-3]], NE:[[0,-2],[0,-3]], E:[[-3,0],[-3,-1]], SE:[[-5,-1],[-5,-2]],
+    S:[[-6,-3],[-7,-2]], SW:[[-5,-3],[-6,-1]], W:[[-4,-2],[-4,-3]], NW:[[-1,0],[-1,-1]]
+  };
+  let x = 80, y = 220, tx = 80, ty = 220;
+  let frames = 0, idleTime = 0, idleAnim = null, idleFrame = 0, running = false, last = 0;
+  const SPEED = 13;
+
+  function setSprite(name, f) {
+    const s = sprites[name] || sprites.idle;
+    const p = s[f % s.length];
+    el.style.backgroundPosition = `${p[0] * S}px ${p[1] * S}px`;
+  }
+  function idle() {
+    idleTime++;
+    if (idleTime > 10 && Math.random() < .006 && idleAnim == null)
+      idleAnim = Math.random() < .5 ? 'sleeping' : 'scratch';
+    if (idleAnim === 'sleeping') {
+      if (idleFrame < 8) { setSprite('tired', 0); }
+      else { setSprite('sleeping', Math.floor(idleFrame / 4)); }
+      if (idleFrame > 160) { idleAnim = null; idleFrame = 0; }
+      idleFrame++;
+    } else if (idleAnim === 'scratch') {
+      setSprite('scratch', idleFrame);
+      if (idleFrame > 9) { idleAnim = null; idleFrame = 0; }
+      idleFrame++;
+    } else setSprite('idle', 0);
+  }
+  function step() {
+    frames++;
+    const dx = x - tx, dy = y - ty, dist = Math.hypot(dx, dy);
+    if (dist < 52) { idle(); return; }
+    idleAnim = null; idleFrame = 0;
+    if (idleTime > 1) { setSprite('alert', 0); idleTime = Math.min(idleTime, 6) - 1; return; }
+    let dir = '';
+    dir += dy / dist > .5 ? 'N' : ''; dir += dy / dist < -.5 ? 'S' : '';
+    dir += dx / dist > .5 ? 'W' : ''; dir += dx / dist < -.5 ? 'E' : '';
+    setSprite(dir || 'S', frames);
+    x -= (dx / dist) * SPEED; y -= (dy / dist) * SPEED;
+    x = clamp(x, S / 2, innerWidth - S / 2);
+    y = clamp(y, 38 + S / 2, innerHeight - S / 2);
+    el.style.left = (x - S / 2) + 'px';
+    el.style.top = (y - S / 2) + 'px';
+  }
+  function loop(t) {
+    if (!running) return;
+    requestAnimationFrame(loop);
+    if (t - last > 100) { last = t; step(); }
+  }
+  return {
+    start() {
+      if (running || reduceMotion) return;
+      running = true; el.style.display = 'block';
+      el.style.left = (x - S / 2) + 'px'; el.style.top = (y - S / 2) + 'px';
+      last = 0; requestAnimationFrame(loop);
+    },
+    stop() { running = false; el.style.display = 'none'; },
+    chase(px, py) { tx = px; ty = py; }
+  };
+})();
 
 /* ============================================================
    Контент из CONFIG
    ============================================================ */
-const name = (CONFIG.name || '').trim();
-$('#hello').textContent = name ? `Привет, ${name}` : 'Привет, красивая';
-$('#envCaption').textContent = name ? `${name}, тебе письмо` : 'Тебе письмо';
-$('#lede').textContent = (CONFIG.lede || '').trim() || (CONFIG.place
-  ? `Я тут подумал… ${CONFIG.place} — идеальное место, чтобы побыть вдвоём. Только мы, вкусная еда и долгий разговор ни о чём. Осталась одна маленькая деталь.`
-  : 'Я тут подумал… нам определённо нужен день вдвоём. Только мы, вкусная еда и долгий разговор ни о чём. Осталась одна маленькая деталь.');
+const NAME = (CONFIG.name || '').trim();
+$('#heroName').textContent = NAME || 'Привет';
+$('#askLead').textContent = CONFIG.askLead || '';
+$('#routeDate').textContent = CONFIG.date || '';
 $('#sign').textContent = CONFIG.signature ? `— всегда твой, ${CONFIG.signature}` : '';
 
-/* Карточка деталей */
-const ICONS = {
-  place: '<path d="M12 21s-7-5.6-7-11a7 7 0 1 1 14 0c0 5.4-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/>',
-  date:  '<rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/>',
-  time:  '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
-  addr:  '<path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M10 21v-6h4v6"/>',
-  car:   '<path d="M5 17h14"/><path d="M6 17v2M18 17v2"/><path d="M3 13l2-5.5A2 2 0 0 1 6.9 6h10.2a2 2 0 0 1 1.9 1.5L21 13v4H3z"/><circle cx="7.5" cy="13.5" r="1"/><circle cx="16.5" cy="13.5" r="1"/>'
-};
-function addRow(icon, key, value) {
-  if (!value) return;
+const STOPS = [
+  { n: '01', title: CONFIG.place1, chips: [CONFIG.date, CONFIG.time1], note: CONFIG.note1, cat: 'assets/cats/cat-pixel-heart.gif' },
+  { n: '02', title: CONFIG.place2, chips: [CONFIG.time2], note: CONFIG.note2, cat: 'assets/cats/cat-dance.gif' }
+];
+for (const s of STOPS) {
+  if (!s.title) continue;
+  const chips = s.chips.filter(Boolean).map(c => `<span class="chip">${c}</span>`).join('');
   const el = document.createElement('div');
-  el.className = 'row';
+  el.className = 'stop';
   el.innerHTML =
-    `<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
-       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icon}</svg></span>
-     <span><span class="k">${key}</span><span class="v">${value}</span></span>`;
-  $('#detailRows').appendChild(el);
-}
-addRow(ICONS.place, 'Место',  CONFIG.place);
-addRow(ICONS.date,  'Когда',  CONFIG.date);
-addRow(ICONS.time,  'Во сколько', CONFIG.time);
-addRow(ICONS.addr,  'Адрес',  CONFIG.address);
-addRow(ICONS.car,   'И ещё',  CONFIG.pickup);
-
-if (!$('#detailRows').children.length) {
-  $('#detailsSub').textContent = 'детали пока держу в секрете';
-  addRow(ICONS.place, 'Место', 'Сюрприз');
-  addRow(ICONS.date,  'Когда', 'Скажу лично');
+    `<span class="stop-num">${s.n}</span>
+     <div>
+       <h3 class="stop-title">${s.title}</h3>
+       ${chips ? `<div class="stop-meta">${chips}</div>` : ''}
+       ${s.note ? `<p class="stop-note">${s.note}</p>` : ''}
+     </div>
+     <img class="stop-cat" src="${s.cat}" alt="" loading="lazy">`;
+  $('#stops').appendChild(el);
 }
 
 /* ============================================================
@@ -867,42 +812,35 @@ if (!$('#detailRows').children.length) {
    ============================================================ */
 function showScene(id) {
   document.querySelectorAll('.scene').forEach(s => s.classList.toggle('active', s.id === id));
-  window.scrollTo(0, 0);
+  document.querySelectorAll('.scene').forEach(s => s.scrollTop = 0);
 }
 
-/* ---------- Конверт ---------- */
-const envelope = $('#envelope');
-let opened = false;
-envelope.addEventListener('click', () => {
-  if (opened) return;
-  opened = true;
-  audio();
-  sfx.open();
-  envelope.classList.add('open');
-  $('#tapHint').style.opacity = '0';
-  setTimeout(() => { showScene('sceneAsk'); setTimeout(setupNoButton, 420); }, reduceMotion ? 150 : 950);
+$('#btnStart').addEventListener('click', () => {
+  audio(); sfx.start();
+  showScene('sceneAsk');
+  setTimeout(() => { setupNoButton(); neko.start(); }, 380);
 });
 
 /* ============================================================
    Убегающая кнопка «Нет»
    ============================================================ */
 const btnNo = $('#btnNo'), btnYes = $('#btnYes'), spacer = $('#noSpacer');
-const reaction = $('#reaction'), yesLabel = $('#yesLabel');
+const reaction = $('#reaction'), reactionCat = $('#reactionCat'), yesLabel = $('#yesLabel');
 
 const NO_LABELS = [
-  'Нет', 'Точно нет?', 'Уверена?', 'Подумай ещё', 'А если подумать?',
-  'Ну пожалуйста', 'Я угощаю десертом', 'Там будет вкусно', 'Последний шанс', 'Ладно, сдаюсь…'
+  'Нет', 'Точно нет?', 'Уверена?', 'Подумай ещё', 'А как же коты?',
+  'Ну пожалуйста', 'Там сотня котов', 'И хачапури', 'Последний шанс', 'Всё, я сдаюсь…'
 ];
 const REACTIONS = [
-  'эй, куда это она?',
-  'кажется, «нет» стесняется',
-  'она убегает быстрее меня',
-  'у тебя хорошая реакция!',
-  'кнопка «нет» явно не хочет быть нажатой',
+  'эй, куда!',
+  'кнопка «нет» стесняется',
+  'она бегает быстрее меня',
+  'кот уже побежал за ней',
+  'коты расстроятся, если что',
   'может, всё-таки «да»?',
-  'она уже устала бегать',
-  'ещё чуть-чуть — и она уволится',
-  'ну всё, я почти уверен в ответе',
+  'она устала. и я тоже',
+  'ещё немного — и она уволится',
+  'кажется, ответ очевиден',
   'кнопка «нет» ушла в закат'
 ];
 
@@ -921,60 +859,55 @@ function setupNoButton() {
   btnNo.style.top = r.top + 'px';
   document.body.appendChild(btnNo);
   loose = true;
+  neko.chase(r.left + r.width / 2, r.top + r.height / 2);
 }
-
-function rectOf(el) { return el.getBoundingClientRect(); }
+const rectOf = (el) => el.getBoundingClientRect();
 function overlaps(a, b, pad = 24) {
   return !(a.right + pad < b.left || a.left - pad > b.right ||
            a.bottom + pad < b.top || a.top - pad > b.bottom);
 }
-
 let lastPointer = { x: -9999, y: -9999 };
 document.addEventListener('pointermove', (e) => { lastPointer = { x: e.clientX, y: e.clientY }; }, { passive: true });
 
 function escapeNo() {
   if (!loose || escapes > MAX_ESCAPES) return;
-
-  const vw = (window.visualViewport && window.visualViewport.width)  || window.innerWidth;
-  const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
-  const r = rectOf(btnNo);
-  const w = r.width, h = r.height;
-  const m = 14;
+  const vw = (visualViewport && visualViewport.width) || innerWidth;
+  const vh = (visualViewport && visualViewport.height) || innerHeight;
+  const r = rectOf(btnNo), w = r.width, h = r.height, m = 14;
   const yesR = rectOf(btnYes);
 
   let best = null, bestScore = -1;
   for (let i = 0; i < 60; i++) {
     const x = rand(m, Math.max(m, vw - w - m));
-    const y = rand(m + 56, Math.max(m + 56, vh - h - m));   // не лезем под кнопку звука
+    const y = rand(m + 100, Math.max(m + 100, vh - h - m));   // ниже тикера и кнопки звука
     const cand = { left: x, top: y, right: x + w, bottom: y + h };
     if (overlaps(cand, yesR, 26)) continue;
-    const dx = (x + w / 2) - lastPointer.x, dy = (y + h / 2) - lastPointer.y;
-    const score = Math.hypot(dx, dy);
-    if (score > bestScore) { bestScore = score; best = { x, y }; }
-    if (score > 260) break;
+    const d = Math.hypot((x + w / 2) - lastPointer.x, (y + h / 2) - lastPointer.y);
+    if (d > bestScore) { bestScore = d; best = { x, y }; }
+    if (d > 280) break;
   }
-  if (!best) best = { x: rand(m, Math.max(m, vw - w - m)), y: rand(m + 60, Math.max(m + 60, vh - h - m)) };
+  if (!best) best = { x: rand(m, Math.max(m, vw - w - m)), y: rand(m + 100, Math.max(m + 100, vh - h - m)) };
 
   btnNo.style.left = best.x + 'px';
   btnNo.style.top = best.y + 'px';
-  btnNo.style.transform = `rotate(${rand(-9, 9).toFixed(1)}deg)`;
+  btnNo.style.transform = `rotate(${rand(-8, 8).toFixed(1)}deg)`;
+  neko.chase(best.x + w / 2, best.y + h / 2);
 
   escapes++;
-  sfx.pop();
+  escapes % 3 === 0 ? sfx.meow() : sfx.pop();
 
-  // «Да» растёт, «Нет» съёживается
   const grow = Math.min(escapes, 8);
-  btnYes.style.fontSize = (19 + grow * 2.4) + 'px';
-  btnYes.style.padding = (16 + grow * 2.6) + 'px ' + (30 + grow * 5) + 'px';
-  btnYes.style.minHeight = (56 + grow * 5) + 'px';
+  btnYes.style.fontSize = (20 + grow * 2.6) + 'px';
+  btnYes.style.padding = (16 + grow * 2.4) + 'px ' + (30 + grow * 5) + 'px';
+  btnYes.style.minHeight = (60 + grow * 5) + 'px';
   if (escapes >= 3) yesLabel.textContent = 'Да!';
-  if (escapes >= 6) yesLabel.textContent = 'Конечно да!';
+  if (escapes >= 6) yesLabel.textContent = 'Конечно да';
 
-  const shrink = Math.max(.62, 1 - escapes * 0.045);
-  btnNo.style.fontSize = (19 * shrink) + 'px';
-  btnNo.style.padding = `${16 * shrink}px ${30 * shrink}px`;
-  btnNo.style.minHeight = `${Math.max(38, 56 * shrink)}px`;
-  btnNo.style.minWidth = `${Math.max(84, 120 * shrink)}px`;
+  const shrink = Math.max(.6, 1 - escapes * .045);
+  btnNo.style.fontSize = (18 * shrink) + 'px';
+  btnNo.style.padding = `${14 * shrink}px ${24 * shrink}px`;
+  btnNo.style.minHeight = `${Math.max(36, 54 * shrink)}px`;
+  btnNo.style.minWidth = `${Math.max(80, 118 * shrink)}px`;
 
   const li = Math.min(escapes, NO_LABELS.length - 1);
   btnNo.textContent = NO_LABELS[li];
@@ -982,55 +915,53 @@ function escapeNo() {
 
   reaction.textContent = REACTIONS[Math.min(escapes - 1, REACTIONS.length - 1)];
   reaction.classList.add('show');
+  reactionCat.src = escapes % 2 ? 'assets/cats/cat-cry.gif' : 'assets/cats/cat-beg.gif';
+  reactionCat.classList.add('show');
 
   if (escapes > MAX_ESCAPES) {
     btnNo.classList.add('poof');
-    setTimeout(() => { btnNo.style.display = 'none'; }, 340);
-    reaction.textContent = 'кнопка «нет» уволилась. остался один вариант ♥';
+    setTimeout(() => { btnNo.style.display = 'none'; }, 320);
+    reaction.textContent = 'всё, «нет» сбежало. остался один вариант';
+    neko.chase(innerWidth / 2, innerHeight / 2);
   }
 }
 
-/* Мышь: убегает при приближении и при наведении */
 btnNo.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') escapeNo(); });
 document.addEventListener('pointermove', (e) => {
   if (e.pointerType !== 'mouse' || !loose || btnNo.style.display === 'none') return;
   const r = rectOf(btnNo);
-  const dx = e.clientX - (r.left + r.width / 2);
-  const dy = e.clientY - (r.top + r.height / 2);
-  if (Math.hypot(dx, dy) < r.width * .95 + 40) escapeNo();
+  if (Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2)) < r.width * .9 + 46) escapeNo();
 }, { passive: true });
-
-/* Тач: убегает раньше, чем случится клик */
 btnNo.addEventListener('touchstart', (e) => { e.preventDefault(); escapeNo(); }, { passive: false });
 btnNo.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') { e.preventDefault(); escapeNo(); } });
-
-/* Клавиатура: тоже не даём нажать, но по-доброму */
 btnNo.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); escapeNo(); }
 });
 btnNo.addEventListener('click', (e) => { e.preventDefault(); escapeNo(); });
 
-window.addEventListener('resize', () => {
+addEventListener('resize', () => {
   if (!loose || btnNo.style.display === 'none') return;
-  const vw = window.innerWidth, vh = window.innerHeight, r = rectOf(btnNo);
-  btnNo.style.left = clamp(parseFloat(btnNo.style.left) || 0, 12, Math.max(12, vw - r.width - 12)) + 'px';
-  btnNo.style.top  = clamp(parseFloat(btnNo.style.top)  || 0, 70, Math.max(70, vh - r.height - 12)) + 'px';
+  const r = rectOf(btnNo);
+  const nx = clamp(parseFloat(btnNo.style.left) || 0, 12, Math.max(12, innerWidth - r.width - 12));
+  const ny = clamp(parseFloat(btnNo.style.top) || 0, 100, Math.max(100, innerHeight - r.height - 12));
+  btnNo.style.left = nx + 'px'; btnNo.style.top = ny + 'px';
+  neko.chase(nx + r.width / 2, ny + r.height / 2);
 });
 
 /* ============================================================
    «Да»
    ============================================================ */
 btnYes.addEventListener('click', () => {
-  audio();
-  sfx.yes();
+  audio(); sfx.win();
   const r = rectOf(btnYes);
   btnNo.style.display = 'none';
+  neko.stop();
   showScene('sceneYes');
-  if (reduceMotion) return;             // без анимаций — просто показываем сцену
-  burstConfetti(r.left + r.width / 2, r.top + r.height / 2, 120);
+  if (reduceMotion) return;
+  burstConfetti(r.left + r.width / 2, r.top + r.height / 2, 130);
   startFx();
-  setTimeout(() => burstConfetti(window.innerWidth * .22, window.innerHeight * .45, 70), 260);
-  setTimeout(() => burstConfetti(window.innerWidth * .78, window.innerHeight * .45, 70), 460);
+  setTimeout(() => burstConfetti(innerWidth * .2, innerHeight * .5, 70), 240);
+  setTimeout(() => burstConfetti(innerWidth * .8, innerHeight * .5, 70), 440);
 });
 
 $('#btnAgain').addEventListener('click', () => {
@@ -1038,58 +969,51 @@ $('#btnAgain').addEventListener('click', () => {
   btnNo.style.cssText = '';
   btnNo.className = 'btn btn-no';
   btnNo.textContent = NO_LABELS[0];
-  btnNo.style.display = '';
   spacer.classList.remove('on');
   $('.actions').insertBefore(btnNo, spacer.nextSibling);
   btnYes.style.cssText = '';
   yesLabel.textContent = 'Да';
-  reaction.classList.remove('show');
-  reaction.textContent = '';
-  sfx.tap();
+  reaction.classList.remove('show'); reaction.textContent = '';
+  reactionCat.classList.remove('show');
+  sfx.tick();
   showScene('sceneAsk');
-  setTimeout(setupNoButton, 420);
+  setTimeout(() => { setupNoButton(); neko.start(); }, 380);
 });
 
 /* ============================================================
-   .ics — «Добавить в календарь»
+   .ics — «В календарь»
    ============================================================ */
 const btnIcs = $('#btnIcs');
-function icsStamp(local) {
-  // "2026-08-23T19:00" -> "20260823T190000"
-  const m = String(local).match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+const icsStamp = (s) => {
+  const m = String(s).match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
   return m ? `${m[1]}${m[2]}${m[3]}T${m[4]}${m[5]}00` : null;
-}
+};
 if (!CONFIG.icsStart || !icsStamp(CONFIG.icsStart)) {
   btnIcs.style.display = 'none';
 } else {
   btnIcs.addEventListener('click', () => {
-    const start = icsStamp(CONFIG.icsStart);
-    const end = icsStamp(CONFIG.icsEnd) || start;
+    const start = icsStamp(CONFIG.icsStart), end = icsStamp(CONFIG.icsEnd) || start;
     const esc = (s) => String(s).replace(/([,;\\])/g, '\\$1').replace(/\n/g, '\\n');
     const ics = [
       'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//date-invite//RU', 'CALSCALE:GREGORIAN',
       'BEGIN:VEVENT',
       'UID:' + Math.random().toString(36).slice(2) + '@date-invite',
-      'DTSTAMP:' + start,
-      'DTSTART:' + start,
-      'DTEND:' + end,
-      'SUMMARY:' + esc('Свидание' + (CONFIG.place ? ' — ' + CONFIG.place : '')),
-      'LOCATION:' + esc([CONFIG.place, CONFIG.address].filter(Boolean).join(', ')),
-      'DESCRIPTION:' + esc('Наш вечер вдвоём'),
+      'DTSTAMP:' + start, 'DTSTART:' + start, 'DTEND:' + end,
+      'SUMMARY:' + esc([CONFIG.place1, CONFIG.place2].filter(Boolean).join(' → ')),
+      'LOCATION:' + esc(CONFIG.place1 || ''),
+      'DESCRIPTION:' + esc([CONFIG.note1, CONFIG.note2].filter(Boolean).join(' ')),
       'END:VEVENT', 'END:VCALENDAR'
     ].join('\r\n');
-    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
+    a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
     a.download = 'svidanie.ics';
     document.body.appendChild(a); a.click();
     setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
-    sfx.tap();
+    sfx.tick();
   });
 }
 
-/* Мягкий звук при наведении на «Да» */
-btnYes.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') sfx.hover(); });
+btnYes.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') sfx.tick(); });
 </script>
 </body>
 </html>
