@@ -615,8 +615,9 @@ function tone(freq, dur = .12, type = 'square', vol = .05, delay = 0, glideTo = 
 }
 const sfx = {
   start: () => { [392, 523.25, 659.25, 784].forEach((f, i) => tone(f, .13, 'square', .05, i * .07)); },
-  pop:   () => tone(rand(520, 880), .09, 'square', .045, 0, rand(220, 380)),
-  meow:  () => { tone(680, .16, 'sawtooth', .035, 0, 420); tone(520, .12, 'sine', .025, .1, 700); },
+  pop:   () => tone(rand(430, 620), .14, 'triangle', .03, 0, rand(200, 300)),
+  meow:  () => { tone(700, .18, 'triangle', .028, 0, 430); tone(500, .14, 'sine', .02, .11, 690); },
+  caught:() => { [659.25, 880, 1046.5].forEach((f, i) => tone(f, .22, 'triangle', .038, i * .1)); },
   win:   () => { [523.25, 659.25, 784, 1046.5, 1318.5].forEach((f, i) => tone(f, .3, 'square', .05, i * .085)); },
   tick:  () => tone(880, .06, 'square', .035)
 };
@@ -770,6 +771,7 @@ const neko = (() => {
   };
   let x = 80, y = 220, tx = 80, ty = 220;
   let frames = 0, idleTime = 0, idleAnim = null, idleFrame = 0, running = false, last = 0;
+  let arriveCb = null;                 // вызывается один раз, когда кот добежал до цели
   const SPEED = 13;
 
   function setSprite(name, f) {
@@ -795,7 +797,10 @@ const neko = (() => {
   function step() {
     frames++;
     const dx = x - tx, dy = y - ty, dist = Math.hypot(dx, dy);
-    if (dist < 52) { idle(); return; }
+    if (dist < 52) {
+      if (arriveCb) { const cb = arriveCb; arriveCb = null; cb(); }
+      idle(); return;
+    }
     idleAnim = null; idleFrame = 0;
     if (idleTime > 1) { setSprite('alert', 0); idleTime = Math.min(idleTime, 6) - 1; return; }
     let dir = '';
@@ -820,8 +825,10 @@ const neko = (() => {
       el.style.left = (x - S / 2) + 'px'; el.style.top = (y - S / 2) + 'px';
       last = 0; requestAnimationFrame(loop);
     },
-    stop() { running = false; el.style.display = 'none'; },
-    chase(px, py) { tx = px; ty = py; }
+    stop() { running = false; el.style.display = 'none'; arriveCb = null; },
+    chase(px, py) { tx = px; ty = py; },
+    onArrive(cb) { arriveCb = cb; },
+    get alive() { return running; }
   };
 })();
 
@@ -876,39 +883,63 @@ const reaction = $('#reaction'), reactionCat = $('#reactionCat'), yesLabel = $('
 
 const NO_LABELS = [
   'Нет', 'Точно нет?', 'Уверена?', 'Подумай ещё', 'А как же коты?',
-  'Ну пожалуйста', 'Там сотня котов', 'И хачапури', 'Последний шанс', 'Всё, я сдаюсь…'
+  'Ну пожалуйста', 'Там сотня котов', 'И хачапури', 'Кот уже близко', 'Уф… не могу больше'
 ];
 const REACTIONS = [
   'эй, куда!',
-  'кнопка «нет» стесняется',
+  'кнопка «нет» застеснялась',
   'она бегает быстрее меня',
-  'кот уже побежал за ней',
+  'кот побежал за ней',
   'коты расстроятся, если что',
   'может, всё-таки «да»?',
-  'она устала. и я тоже',
-  'ещё немного — и она уволится',
-  'кажется, ответ очевиден',
-  'кнопка «нет» ушла в закат'
+  'она уже выдыхается',
+  'кот заходит справа',
+  'ей некуда бежать'
 ];
 
-let escapes = 0, loose = false;
-const MAX_ESCAPES = NO_LABELS.length - 1;
+/* Состояние погони.
+   Позицию держим в переменных: во время перелёта getBoundingClientRect()
+   возвращает промежуточные значения, и проверка «мышь рядом» срабатывала
+   десятки раз подряд — кнопка дёргалась и мгновенно исчезала. */
+let escapes = 0, loose = false, busy = false, tired = false, caught = false;
+let lastEscape = 0, busySince = 0;
+let noX = 0, noY = 0;
+const MAX_ESCAPES = NO_LABELS.length - 1;   // после этого кнопка выдыхается
+const COOLDOWN = 620;                       // мс: перелёт длится 450, плюс пауза
+const TRAVEL = 450;
+
+const rectOf = (el) => el.getBoundingClientRect();
+const vpW = () => (visualViewport && visualViewport.width) || innerWidth;
+const vpH = () => (visualViewport && visualViewport.height) || innerHeight;
+const wait = (ms) => new Promise(r => setTimeout(r, ms));
+
+function noSize() { return { w: btnNo.offsetWidth || 118, h: btnNo.offsetHeight || 54 }; }
+
+function place(x, y, ms) {
+  noX = x; noY = y;
+  btnNo.style.transitionDuration = ms + 'ms';
+  btnNo.style.left = x + 'px';
+  btnNo.style.top = y + 'px';
+  neko.chase(x + noSize().w / 2, y + noSize().h / 2);
+}
 
 function setupNoButton() {
   if (loose) return;
-  const r = btnNo.getBoundingClientRect();
+  const r = rectOf(btnNo);
   if (!r.width) return;
   spacer.style.width = r.width + 'px';
   spacer.style.height = r.height + 'px';
   spacer.classList.add('on');
   btnNo.classList.add('loose');
+  btnNo.style.transitionDuration = '0ms';
   btnNo.style.left = r.left + 'px';
   btnNo.style.top = r.top + 'px';
   document.body.appendChild(btnNo);
   loose = true;
+  noX = r.left; noY = r.top;
   neko.chase(r.left + r.width / 2, r.top + r.height / 2);
 }
-const rectOf = (el) => el.getBoundingClientRect();
+
 function overlaps(a, b, pad = 24) {
   return !(a.right + pad < b.left || a.left - pad > b.right ||
            a.bottom + pad < b.top || a.top - pad > b.bottom);
@@ -916,33 +947,92 @@ function overlaps(a, b, pad = 24) {
 let lastPointer = { x: -9999, y: -9999 };
 document.addEventListener('pointermove', (e) => { lastPointer = { x: e.clientX, y: e.clientY }; }, { passive: true });
 
-function escapeNo() {
-  if (!loose || escapes > MAX_ESCAPES) return;
-  const vw = (visualViewport && visualViewport.width) || innerWidth;
-  const vh = (visualViewport && visualViewport.height) || innerHeight;
-  const r = rectOf(btnNo), w = r.width, h = r.height, m = 14;
+/* Точка подальше от курсора И подальше от текущего места —
+   иначе кнопка «убегает» на десять пикселей и это выглядит как дёрганье. */
+function pickSpot() {
+  const { w, h } = noSize();
+  const vw = vpW(), vh = vpH(), m = 14, topLimit = m + 100;   // ниже бегущей строки и кнопки звука
   const yesR = rectOf(btnYes);
+  const minJump = Math.min(vw, vh) * 0.42;
 
-  let best = null, bestScore = -1;
-  for (let i = 0; i < 60; i++) {
+  let best = null, bestScore = -1, fallback = null;
+  for (let i = 0; i < 80; i++) {
     const x = rand(m, Math.max(m, vw - w - m));
-    const y = rand(m + 100, Math.max(m + 100, vh - h - m));   // ниже тикера и кнопки звука
-    const cand = { left: x, top: y, right: x + w, bottom: y + h };
-    if (overlaps(cand, yesR, 26)) continue;
-    const d = Math.hypot((x + w / 2) - lastPointer.x, (y + h / 2) - lastPointer.y);
-    if (d > bestScore) { bestScore = d; best = { x, y }; }
-    if (d > 280) break;
+    const y = rand(topLimit, Math.max(topLimit, vh - h - m));
+    if (overlaps({ left: x, top: y, right: x + w, bottom: y + h }, yesR, 26)) continue;
+    const fromPointer = Math.hypot((x + w / 2) - lastPointer.x, (y + h / 2) - lastPointer.y);
+    if (!fallback) fallback = { x, y };
+    if (Math.hypot(x - noX, y - noY) < minJump) continue;      // слишком близко — не считается побегом
+    if (fromPointer > bestScore) { bestScore = fromPointer; best = { x, y }; }
+    if (fromPointer > 300) break;
   }
-  if (!best) best = { x: rand(m, Math.max(m, vw - w - m)), y: rand(m + 100, Math.max(m + 100, vh - h - m)) };
+  return best || fallback || { x: m, y: topLimit };
+}
 
-  btnNo.style.left = best.x + 'px';
-  btnNo.style.top = best.y + 'px';
-  btnNo.style.transform = `rotate(${rand(-8, 8).toFixed(1)}deg)`;
-  neko.chase(best.x + w / 2, best.y + h / 2);
+/* Раз в несколько побегов кнопка уезжает за край экрана и въезжает с другой стороны. */
+async function dashAcross() {
+  busy = true; busySince = performance.now();
+  try {
+    const { w } = noSize(), vw = vpW();
+    const toRight = noX < vw / 2;
+    place(toRight ? vw + 60 : -w - 60, noY, 520);
+    await wait(560);
+
+    // Мгновенный перенос к противоположному краю.
+    // Тут нельзя ждать кадра через requestAnimationFrame: в фоновой вкладке
+    // он не вызывается, и кнопка навсегда застревала за экраном.
+    // Принудительный reflow фиксирует новую позицию без анимации.
+    btnNo.style.transitionDuration = '0ms';
+    noX = toRight ? -w - 60 : vw + 60;
+    btnNo.style.left = noX + 'px';
+    void btnNo.offsetWidth;
+
+    const p = pickSpot();
+    place(p.x, p.y, 560);
+    await wait(580);
+  } finally {
+    busy = false;
+    lastEscape = performance.now();
+  }
+}
+
+/* Возвращает кнопку на экран, если она застряла за краем */
+function bringHome() {
+  const { w, h } = noSize();
+  if (noX >= 0 && noY >= 0 && noX + w <= vpW() && noY + h <= vpH()) return;
+  const p = pickSpot();
+  place(p.x, p.y, 260);
+}
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && loose && !caught) { busy = false; bringHome(); }
+});
+
+function catchIt() {
+  if (caught) return;
+  caught = true;
+  const { w, h } = noSize();
+  btnNo.classList.add('poof');
+  setTimeout(() => { btnNo.style.display = 'none'; }, 340);
+  if (!reduceMotion) burstConfetti(noX + w / 2, noY + h / 2, 40);
+  sfx.caught();
+  reaction.textContent = 'кот поймал кнопку «нет». вопрос закрыт';
+  reactionCat.src = 'assets/cats/cat-happy.gif';
+}
+
+function escapeNo() {
+  if (!loose || tired || caught) return;
+  const now = performance.now();
+  // если рывок за край почему-то не доиграл (например, вкладку свернули) — разблокируем
+  if (busy && now - busySince > 3000) { busy = false; bringHome(); }
+  if (busy) return;
+  if (now - lastEscape < COOLDOWN) return;      // без паузы все побеги случались за долю секунды
+  lastEscape = now;
 
   escapes++;
   escapes % 3 === 0 ? sfx.meow() : sfx.pop();
+  btnNo.style.transform = `rotate(${rand(-8, 8).toFixed(1)}deg)`;
 
+  // «Да» растёт
   const grow = Math.min(escapes, 8);
   btnYes.style.fontSize = (20 + grow * 2.6) + 'px';
   btnYes.style.padding = (16 + grow * 2.4) + 'px ' + (30 + grow * 5) + 'px';
@@ -950,11 +1040,12 @@ function escapeNo() {
   if (escapes >= 3) yesLabel.textContent = 'Да!';
   if (escapes >= 6) yesLabel.textContent = 'Конечно да';
 
-  const shrink = Math.max(.6, 1 - escapes * .045);
+  // «Нет» съёживается
+  const shrink = Math.max(.62, 1 - escapes * .04);
   btnNo.style.fontSize = (18 * shrink) + 'px';
   btnNo.style.padding = `${14 * shrink}px ${24 * shrink}px`;
-  btnNo.style.minHeight = `${Math.max(36, 54 * shrink)}px`;
-  btnNo.style.minWidth = `${Math.max(80, 118 * shrink)}px`;
+  btnNo.style.minHeight = `${Math.max(38, 54 * shrink)}px`;
+  btnNo.style.minWidth = `${Math.max(84, 118 * shrink)}px`;
 
   const li = Math.min(escapes, NO_LABELS.length - 1);
   btnNo.textContent = NO_LABELS[li];
@@ -965,20 +1056,29 @@ function escapeNo() {
   reactionCat.src = escapes % 2 ? 'assets/cats/cat-cry.gif' : 'assets/cats/cat-beg.gif';
   reactionCat.classList.add('show');
 
-  if (escapes > MAX_ESCAPES) {
-    btnNo.classList.add('poof');
-    setTimeout(() => { btnNo.style.display = 'none'; }, 320);
-    reaction.textContent = 'всё, «нет» сбежало. остался один вариант';
-    neko.chase(innerWidth / 2, innerHeight / 2);
+  if (escapes >= MAX_ESCAPES) {
+    // Выдохлась: больше не убегает, кот догоняет — и на этом всё
+    tired = true;
+    const p = pickSpot();
+    place(p.x, p.y, TRAVEL);
+    reaction.textContent = 'она выдохлась. кот уже рядом';
+    // кот догоняет — а если его нет или вкладка свёрнута и он замер, срабатывает таймер
+    if (neko.alive) { neko.onArrive(catchIt); setTimeout(catchIt, 6000); }
+    else setTimeout(catchIt, 1200);
+    return;
   }
+
+  if (escapes >= 3 && escapes % 4 === 0) dashAcross();
+  else { const p = pickSpot(); place(p.x, p.y, TRAVEL); }
 }
 
-btnNo.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') escapeNo(); });
+/* Мышь: расстояние считаем до «настоящей» позиции, а не до летящей */
 document.addEventListener('pointermove', (e) => {
-  if (e.pointerType !== 'mouse' || !loose || btnNo.style.display === 'none') return;
-  const r = rectOf(btnNo);
-  if (Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2)) < r.width * .9 + 46) escapeNo();
+  if (e.pointerType !== 'mouse' || !loose || busy || tired || caught) return;
+  const { w, h } = noSize();
+  if (Math.hypot(e.clientX - (noX + w / 2), e.clientY - (noY + h / 2)) < w * .7 + 54) escapeNo();
 }, { passive: true });
+
 btnNo.addEventListener('touchstart', (e) => { e.preventDefault(); escapeNo(); }, { passive: false });
 btnNo.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') { e.preventDefault(); escapeNo(); } });
 btnNo.addEventListener('keydown', (e) => {
@@ -987,12 +1087,10 @@ btnNo.addEventListener('keydown', (e) => {
 btnNo.addEventListener('click', (e) => { e.preventDefault(); escapeNo(); });
 
 addEventListener('resize', () => {
-  if (!loose || btnNo.style.display === 'none') return;
-  const r = rectOf(btnNo);
-  const nx = clamp(parseFloat(btnNo.style.left) || 0, 12, Math.max(12, innerWidth - r.width - 12));
-  const ny = clamp(parseFloat(btnNo.style.top) || 0, 100, Math.max(100, innerHeight - r.height - 12));
-  btnNo.style.left = nx + 'px'; btnNo.style.top = ny + 'px';
-  neko.chase(nx + r.width / 2, ny + r.height / 2);
+  if (!loose || busy || caught) return;
+  const { w, h } = noSize();
+  place(clamp(noX, 12, Math.max(12, innerWidth - w - 12)),
+        clamp(noY, 100, Math.max(100, innerHeight - h - 12)), 0);
 });
 
 /* ============================================================
@@ -1012,7 +1110,8 @@ btnYes.addEventListener('click', () => {
 });
 
 $('#btnAgain').addEventListener('click', () => {
-  escapes = 0; loose = false;
+  escapes = 0; loose = false; busy = false; tired = false; caught = false;
+  lastEscape = 0; noX = 0; noY = 0;
   btnNo.style.cssText = '';
   btnNo.className = 'btn btn-no';
   btnNo.textContent = NO_LABELS[0];
